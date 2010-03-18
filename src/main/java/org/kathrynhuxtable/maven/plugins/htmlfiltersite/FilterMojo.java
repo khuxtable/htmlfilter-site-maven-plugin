@@ -19,43 +19,50 @@
  */
 package org.kathrynhuxtable.maven.plugins.htmlfiltersite;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringUtils;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+
+import org.jdom.input.SAXBuilder;
+
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import org.jdom.xpath.XPath;
 
 /**
  * Goal runs Velocity on the files in the specified directory.
@@ -81,7 +88,6 @@ public class FilterMojo extends AbstractMojo {
      * Velocity template.
      *
      * @parameter expression="${htmlfiltersite.filterProperties}"
-     *            default-value="${basedir}/src/site/htmlfiltersite-filter.properties"
      */
     private File filterProperties;
 
@@ -194,13 +200,21 @@ public class FilterMojo extends AbstractMojo {
             throw new MojoExecutionException("Some random template parsing error occurred", e);
         }
 
-        AttributeMap filterProps = parseConfigFile(filterProperties);
+        AttributeMap filterProps;
+
+        if (filterProperties != null) {
+            filterProps = parseConfigFile(filterProperties);
+        } else {
+            filterProps = new AttributeMap();
+        }
 
         AttributeMap attributes = new AttributeMap();
 
         if (attributes.get("project") == null) {
             attributes.put("project", project);
         }
+
+        attributes.put("outputEncoding", "UTF-8");
 
         // Put any of the properties in directly into the Velocity attributes
         attributes.putAll(project.getProperties());
@@ -229,32 +243,39 @@ public class FilterMojo extends AbstractMojo {
      */
     private void filterFile(String file, VelocityEngine ve, Template template, AttributeMap attributes, AttributeMap filterProps)
         throws MojoExecutionException {
-        File           sourceFile = new File(sourceDirectory, file);
-        File           targetFile = new File(targetDirectory, file);
-        FileWriter     fileWriter = null;
-        BufferedReader fileReader = null;
+        File       sourceFile = new File(sourceDirectory, file);
+        File       targetFile = new File(targetDirectory, file);
+        FileWriter fileWriter = null;
+        Reader     fileReader = null;
 
         VelocityContext context = createContext(sourceFile, attributes);
 
         try {
             StringWriter sw = null;
+
             for (Object key : filterProps.keySet()) {
                 sw = new StringWriter();
                 if (!ve.evaluate(context, sw, "htmlfilter-site", new StringReader((String) filterProps.get(key)))) {
                     throw new MojoExecutionException("Unable to evaluate filter property " + key);
                 }
+
                 context.put((String) key, sw.toString());
             }
 
-            fileReader = new BufferedReader(new FileReader(sourceFile));
-
-            sw = new StringWriter();
+            fileReader = new InputStreamReader(new FileInputStream(sourceFile), "UTF-8");
+            sw         = new StringWriter();
 
             if (!ve.evaluate(context, sw, "htmlfilter-site", fileReader)) {
                 throw new MojoExecutionException("Unable to evaluate html file " + sourceFile);
             }
 
-            context.put("fileContent", sw.toString());
+            Document doc = parseXHTMLDocument(new StringReader(sw.toString()));
+
+            context.put("title", getTitle(doc));
+
+            String bodyContent = getBodyContent(doc);
+
+            context.put("bodyContent", bodyContent);
 
             fileWriter = new FileWriter(targetFile);
 
@@ -378,6 +399,134 @@ public class FilterMojo extends AbstractMojo {
     }
 
     /**
+     * Parse a document from text in the reader.
+     *
+     * @param  reader the Reader from which to parse the document.
+     *
+     * @return the JDom document parsed from the XHTML file.
+     *
+     * @throws IOException   if the reader cannot be read.
+     * @throws JDOMException if the reader cannot be parsed.
+     */
+    private Document parseXHTMLDocument(Reader reader) throws JDOMException, IOException {
+        Document document = null;
+
+        SAXBuilder builder = new SAXBuilder();
+
+        builder.setEntityResolver(new DTDHandler());
+        builder.setIgnoringElementContentWhitespace(true);
+        builder.setIgnoringBoundaryWhitespace(true);
+        document = builder.build(reader);
+
+        return document;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  document DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    private String getTitle(Document document) {
+        Element element = null;
+
+        element = selectSingleNode(document.getRootElement(), "/xhtml:html/xhtml:head/xhtml:title");
+        if (element == null) {
+            return null;
+        }
+
+        return element.getText();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  document DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    private String getBodyContent(Document document) {
+        Element element = null;
+
+        element = selectSingleNode(document.getRootElement(), "/xhtml:html/xhtml:body");
+        if (element == null) {
+            return null;
+        }
+
+        return getElementContentsAsText(element);
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  element
+     *
+     * @return
+     */
+    private String getElementContentsAsText(Element element) {
+        StringBuilder text     = new StringBuilder();
+        XMLOutputter  writer   = new XMLOutputter(Format.getPrettyFormat().setTextMode(Format.TextMode.TRIM_FULL_WHITE)
+                                                      .setExpandEmptyElements(true));
+        List<Element> children = getChildren(element);
+
+        if (children.size() == 0) {
+            return element.getText();
+        }
+
+        for (Element child : children) {
+            StringWriter sw = new StringWriter();
+
+            try {
+                writer.output(child, sw);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            text.append(sw);
+        }
+
+        return text.toString();
+    }
+
+    /**
+     * Wrapper around Element.getChildren() to suppress the type warning.
+     *
+     * @param  element the element whose children to get.
+     *
+     * @return a List of Elements representing the children of the specified
+     *         element.
+     */
+    @SuppressWarnings("unchecked")
+    private List<Element> getChildren(Element element) {
+        return (List<Element>) element.getChildren();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  element DOCUMENT ME!
+     * @param  path    DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    private Element selectSingleNode(Element element, String path) {
+        try {
+            XPath xpath = XPath.newInstance(path);
+
+            xpath.addNamespace("xhtml", "http://www.w3.org/1999/xhtml");
+            return (Element) xpath.selectSingleNode(element);
+        } catch (JDOMException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * DOCUMENT ME!
      *
      * @param  filename DOCUMENT ME!
@@ -387,50 +536,36 @@ public class FilterMojo extends AbstractMojo {
      * @throws MojoExecutionException DOCUMENT ME!
      */
     private AttributeMap parseConfigFile(File filename) throws MojoExecutionException {
-        AttributeMap list         = new AttributeMap();
-        InputStream  configStream = null;
-        Document     doc          = null;
+        AttributeMap list   = new AttributeMap();
+        Reader       reader = null;
+        Document     doc    = null;
 
         try {
-            configStream = new FileInputStream(filename);
+            reader = new FileReader(filename);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw new MojoExecutionException("Unable to open properties file");
         }
 
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder        db  = dbf.newDocumentBuilder();
+        SAXBuilder builder = new SAXBuilder();
 
-            doc = db.parse(configStream);
+        builder.setEntityResolver(new DTDHandler());
+        builder.setIgnoringElementContentWhitespace(true);
+        builder.setIgnoringBoundaryWhitespace(true);
+        try {
+            doc = builder.build(reader);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new MojoExecutionException("Unable to parse XML properties file " + filename, e);
-        } finally {
-            try {
-                configStream.close();
-            } catch (IOException e) {
-            }
         }
 
-        doc.getDocumentElement().normalize();
-        NodeList nodeList = doc.getFirstChild().getChildNodes();
+        List<Element> elementList = getChildren(doc.getRootElement());
 
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
+        for (Element element : elementList) {
+            String key   = element.getName();
+            String value = getElementContentsAsText(element);
 
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element elem  = (Element) node;
-                Node    child = elem.getFirstChild();
-                String  value = null;
-
-                if (child.getNodeType() == Node.TEXT_NODE) {
-                    value = ((Text) child).getData();
-                } else if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
-                    value = ((CDATASection) child).getData();
-                }
-
-                list.put(elem.getTagName(), value);
-            }
+            list.put(key, value);
         }
 
         return list;
