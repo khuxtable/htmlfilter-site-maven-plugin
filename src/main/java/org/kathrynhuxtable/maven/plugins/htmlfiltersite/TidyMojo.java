@@ -25,8 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -72,7 +70,7 @@ public class TidyMojo extends AbstractMojo {
      * Match pattern for the files to be processed..
      *
      * @parameter expression="${htmlfiltersite.tidyFilePattern}"
-     *            default-value="*.html"
+     *            default-value="**\/*.html"
      */
     private String tidyFilePattern;
 
@@ -119,13 +117,6 @@ public class TidyMojo extends AbstractMojo {
         Tidy          tidy          = new Tidy();
         Configuration configuration = tidy.getConfiguration();
 
-        try {
-            validateDirectory(tidySourceDirectory);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new MojoExecutionException("Unable to read tidySourcedirectory: " + tidySourceDirectory, e);
-        }
-
         // Configure Tidy.
         tidy.setXHTML(true);
         tidy.setCharEncoding(Configuration.UTF8);
@@ -136,11 +127,11 @@ public class TidyMojo extends AbstractMojo {
         // Ensure config is self-consistent.
         configuration.adjust();
 
-        boolean    writeBack = (tidySourceDirectory.equals(tidyTargetDirectory));
-        List<File> fileList  = getFileListing(tidySourceDirectory, tidyFilePattern);
-        Errors     errors    = new Errors();
+        boolean      writeBack = (tidySourceDirectory.equals(tidyTargetDirectory));
+        List<String> fileList  = getFileList();
+        Errors       errors    = new Errors();
 
-        for (File file : fileList) {
+        for (String file : fileList) {
             tidyFile(tidy, file, errors, writeBack);
         }
 
@@ -154,6 +145,25 @@ public class TidyMojo extends AbstractMojo {
     }
 
     /**
+     * DOCUMENT ME!
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private List<String> getFileList() {
+        List<String> fileList = null;
+
+        try {
+            fileList = FileUtils.getFileNames(tidySourceDirectory, tidyFilePattern, "", false, true);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return fileList;
+    }
+
+    /**
      * Run Tidy on a single file.
      *
      * @param  tidy      the Tidy instance.
@@ -163,15 +173,16 @@ public class TidyMojo extends AbstractMojo {
      *
      * @throws MojoExecutionException DOCUMENT ME!
      */
-    private void tidyFile(Tidy tidy, File file, Errors errors, boolean writeBack) throws MojoExecutionException {
-        File targetFile = getTargetFile(file, tidySourceDirectory, tidyTargetDirectory);
+    private void tidyFile(Tidy tidy, String file, Errors errors, boolean writeBack) throws MojoExecutionException {
+        File sourceFile = new File(tidySourceDirectory, file);
+        File targetFile = new File(tidyTargetDirectory, file);
 
         if (writeBack) {
             try {
                 targetFile = File.createTempFile("tidy", ".tmp", tidySourceDirectory);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new MojoExecutionException("Unable to create temporary Tidy output file for " + file, e);
+                throw new MojoExecutionException("Unable to create temporary Tidy output file for " + targetFile, e);
             }
         } else {
             File targetParentDirectory = targetFile.getParentFile();
@@ -182,110 +193,20 @@ public class TidyMojo extends AbstractMojo {
         }
 
         try {
-            tidy.parse(new FileInputStream(file), new FileOutputStream(targetFile));
+            tidy.parse(new FileInputStream(sourceFile), new FileOutputStream(targetFile));
             errors.totalWarnings += tidy.getParseWarnings();
             errors.totalErrors   += tidy.getParseErrors();
         } catch (FileNotFoundException fnfe) {
-            Report.unknownFile(tidy.getErrout(), "htmlfilter-site:tidy", file.getAbsolutePath());
+            Report.unknownFile(tidy.getErrout(), "htmlfilter-site:tidy", sourceFile.getAbsolutePath());
         }
 
         if (writeBack) {
             try {
-                FileUtils.rename(targetFile, file);
+                FileUtils.rename(targetFile, sourceFile);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new MojoExecutionException("Unable to rename temporary Tidy output file for " + file, e);
+                throw new MojoExecutionException("Unable to rename temporary Tidy output file for " + sourceFile, e);
             }
-        }
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  sourceFile DOCUMENT ME!
-     * @param  source     DOCUMENT ME!
-     * @param  target     DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws MojoExecutionException DOCUMENT ME!
-     */
-    private File getTargetFile(File sourceFile, File source, File target) throws MojoExecutionException {
-        List<String> names = new ArrayList<String>();
-
-        names.add(sourceFile.getName());
-        File file = sourceFile.getParentFile();
-
-        while (file != null && !file.equals(source)) {
-            names.add(file.getName());
-            file = file.getParentFile();
-        }
-
-        if (file == null) {
-            throw new MojoExecutionException("File " + sourceFile + " is not a child of " + source);
-        }
-
-        file = target;
-        for (int i = names.size() - 1; i >= 0; i--) {
-            file = new File(file, names.get(i));
-        }
-
-        return file;
-    }
-
-    /**
-     * Recursively walk a directory tree and return a List of all Files found;
-     * the List is sorted using File.compareTo().
-     *
-     * @param  aStartingDir is a valid directory, which can be read.
-     * @param  filePattern  DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    private List<File> getFileListing(File aStartingDir, String filePattern) {
-        List<File> result       = new ArrayList<File>();
-        File[]     filesAndDirs = aStartingDir.listFiles();
-        List<File> filesDirs    = Arrays.asList(filesAndDirs);
-
-        for (File file : filesDirs) {
-            if (file.getName().matches(filePattern)) {
-                result.add(file);
-            }
-
-            if (!file.isFile()) {
-                // must be a directory - recursive call!
-                List<File> deeperList = getFileListing(file, filePattern);
-
-                result.addAll(deeperList);
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Directory is valid if it exists, does not represent a file, and can be
-     * read.
-     *
-     * @param  aDirectory DOCUMENT ME!
-     *
-     * @throws FileNotFoundException DOCUMENT ME!
-     */
-    private void validateDirectory(File aDirectory) throws FileNotFoundException {
-        if (aDirectory == null) {
-            throw new IllegalArgumentException("Directory should not be null.");
-        }
-
-        if (!aDirectory.exists()) {
-            throw new FileNotFoundException("Directory does not exist: " + aDirectory);
-        }
-
-        if (!aDirectory.isDirectory()) {
-            throw new IllegalArgumentException("Is not a directory: " + aDirectory);
-        }
-
-        if (!aDirectory.canRead()) {
-            throw new IllegalArgumentException("Directory cannot be read: " + aDirectory);
         }
     }
 
