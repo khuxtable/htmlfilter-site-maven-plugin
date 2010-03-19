@@ -466,8 +466,8 @@ public class FilterMojo extends AbstractMojo {
      */
     private String getElementContentsAsText(Element element) {
         StringBuilder text     = new StringBuilder();
-        XMLOutputter  writer   = new XMLOutputter(Format.getPrettyFormat().setTextMode(Format.TextMode.TRIM_FULL_WHITE)
-                                                      .setExpandEmptyElements(true));
+        HTMLOutputter writer   = new HTMLOutputter(Format.getPrettyFormat().setTextMode(Format.TextMode.TRIM_FULL_WHITE)
+                                                       .setExpandEmptyElements(true));
         List<Element> children = getChildren(element);
 
         if (children.size() == 0) {
