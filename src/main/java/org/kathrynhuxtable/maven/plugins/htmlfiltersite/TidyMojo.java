@@ -45,7 +45,6 @@ import org.w3c.tidy.Tidy;
  * @goal                         tidy
  * @phase                        pre-site
  * @requiresDependencyResolution runtime
- * @configurator                 include-project-dependencies
  */
 public class TidyMojo extends AbstractMojo {
 

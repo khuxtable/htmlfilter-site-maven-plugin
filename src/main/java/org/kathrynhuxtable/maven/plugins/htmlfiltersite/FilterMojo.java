@@ -63,17 +63,16 @@ import org.jdom.xpath.XPath;
  * @goal                         filter
  * @phase                        pre-site
  * @requiresDependencyResolution runtime
- * @configurator                 include-project-dependencies
  */
 public class FilterMojo extends AbstractMojo {
 
     /**
-     * Velocity template.
+     * Velocity template for filtering.
      *
-     * @parameter expression="${htmlfiltersite.filterMacros}"
-     *            default-value="${basedir}/src/site/htmlfiltersite-filter.vm"
+     * @parameter expression="${htmlfiltersite.filterTemplate}"
+     *            default-value="${basedir}/src/site/filter-template.vm"
      */
-    private File filterMacros;
+    private File filterTemplate;
 
     /**
      * Velocity template.
@@ -145,10 +144,10 @@ public class FilterMojo extends AbstractMojo {
     /**
      * Set the filter macros file.
      *
-     * @param filterMacros the filterMacros to set
+     * @param filterTemplate the filterTemplate to set
      */
     public void setFilterMacros(File filterMacros) {
-        this.filterMacros = filterMacros;
+        this.filterTemplate = filterMacros;
     }
 
     /**
@@ -176,7 +175,7 @@ public class FilterMojo extends AbstractMojo {
         Template template = null;
 
         try {
-            template = ve.getTemplate(getRelativeFilePath(new File(System.getProperty("user.dir")), filterMacros));
+            template = ve.getTemplate(getRelativeFilePath(new File(System.getProperty("user.dir")), filterTemplate));
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
             throw new MojoExecutionException("Unable to locate template " + "htmlfiltersite.vm", e);
@@ -189,6 +188,10 @@ public class FilterMojo extends AbstractMojo {
         } catch (Exception e) {
             e.printStackTrace();
             throw new MojoExecutionException("Some random template parsing error occurred", e);
+        }
+        
+        if (!targetDirectory.exists()) {
+            targetDirectory.mkdirs();
         }
 
         AttributeMap filterProps;
