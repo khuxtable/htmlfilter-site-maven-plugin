@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Converted by db4-upgrade version 1.0 -->
+<article version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:ns5="http://www.w3.org/1999/xhtml"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/2000/svg"
+         xmlns:ns="http://docbook.org/ns/docbook">
+  <info>
+    <title>Introduction</title>
+
+    <author>
+      <personname><firstname>Kathryn</firstname><surname>Huxtable</surname></personname>
+
+      <affiliation>
+        <orgname>kathrynhuxtable.org</orgname>
+      </affiliation>
+    </author>
+
+    <pubdate>2010-03-20</pubdate>
+  </info>
+
+  <section>
+    <info>
+      <title>HTML Filter Site Maven Plugin</title>
+    </info>
+
+    <para>The HTML Filter Site Maven plugin filters HTML files destined for
+    site documentation in two ways:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Tidy - It can run JTidy on them to clean them up and make them
+        XHTML compatible.</para>
+      </listitem>
+
+      <listitem>
+        <para>Filter - It can run them through a Velocity filter to provide
+        the appearance of a Doxia-generated file without Doxia's habit of
+        stripping useful formatting.</para>
+      </listitem>
+    </itemizedlist>
+
+    <section>
+      <info>
+        <title>Goals Overview</title>
+      </info>
+
+      <para>The HTML Filter Site plugin has two goals:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><link
+          xlink:href="filter-mojo.html">htmlfilter-site:filter</link> runs
+          Velocity on all files in a directory matching a pattern.</para>
+        </listitem>
+
+        <listitem>
+          <para><link xlink:href="tidy-mojo.html">htmlfilter-site:tidy</link>
+          runs JTidy on all files in a directory matching a pattern.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <info>
+        <title>Usage</title>
+      </info>
+
+      <para>Information on using the HTML Filter Site plugin can be found on
+      the <link xlink:href="usage.html">usage</link> page.</para>
+    </section>
+  </section>
+</article>

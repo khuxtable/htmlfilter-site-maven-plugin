@@ -1,12 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.kathrynhuxtable.maven.plugins</groupId>
 	<artifactId>htmlfilter-site-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>0.2.1</version>
-    <prerequisites>
-        <maven>2.2.1</maven>
-    </prerequisites>
+	<version>0.2.2-SNAPSHOT</version>
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
 	<name>HTML Filter Site Maven plugin</name>
 	<description>
         A Maven Plugin which runs a post-process on HTML files by running
@@ -41,19 +42,19 @@
 		<name>kathrynhuxtable.org</name>
 		<url>http://www.kathrynhuxtable.org</url>
 	</organization>
-    <issueManagement>
-        <system>GitHub</system>
-        <url>http://github.com/khuxtable/htmlfilter-site-maven-plugin/issues</url>
-    </issueManagement>
-    <mailingLists>
-        <mailingList>
-            <name>Kathryn Huxtable's Projects</name>
-            <subscribe>kathryn-huxtable-projects+subscribe@googlegroups.com</subscribe>
-            <unsubscribe>kathryn-huxtable-projects+unsubscribe@googlegroups.com</unsubscribe>
-            <post>kathryn-huxtable-projects@googlegroups.com</post>
-            <archive>http://groups.google.com/group/kathryn-huxtable-projects</archive>
-        </mailingList>
-    </mailingLists>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>http://github.com/khuxtable/htmlfilter-site-maven-plugin/issues</url>
+	</issueManagement>
+	<mailingLists>
+		<mailingList>
+			<name>Kathryn Huxtable's Projects</name>
+			<subscribe>kathryn-huxtable-projects+subscribe@googlegroups.com</subscribe>
+			<unsubscribe>kathryn-huxtable-projects+unsubscribe@googlegroups.com</unsubscribe>
+			<post>kathryn-huxtable-projects@googlegroups.com</post>
+			<archive>http://groups.google.com/group/kathryn-huxtable-projects</archive>
+		</mailingList>
+	</mailingLists>
 	<build>
 		<plugins>
 			<!-- Configure the compiler plugin to use JDK 1.5. -->
@@ -66,18 +67,6 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-docck-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 			<plugin>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-maven-plugin</artifactId>
@@ -218,22 +207,31 @@
 				<reportSets>
 					<reportSet>
 						<reports>
-                            <report>summary</report>
-                            <report>dependencies</report>
-                            <report>dependency-convergence</report>
-                            <report>dependency-management</report>
-                            <report>project-team</report>
-                            <report>issue-tracking</report>
-                            <report>mailing-list</report>
-                            <report>plugin-management</report>
-                            <report>plugins</report>
-                            <report>license</report>
-                            <report>scm</report>
+							<report>summary</report>
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>dependency-management</report>
+							<report>project-team</report>
+							<report>issue-tracking</report>
+							<report>mailing-list</report>
+							<report>plugin-management</report>
+							<report>plugins</report>
+							<report>license</report>
+							<report>scm</report>
 						</reports>
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<!-- Configure the source cross reference. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<requirements>
+						<jdk>1.5</jdk>
+					</requirements>
+				</configuration>
+			</plugin>			<!-- Configure the source cross reference. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
@@ -288,6 +286,111 @@
 		</plugins>
 	</reporting>
 	<profiles>
+		<profile>
+			<id>site</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.kathrynhuxtable.maven.plugins</groupId>
+							<artifactId>htmlfilter-site-maven-plugin</artifactId>
+							<version>${project.version}</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+				<plugins>
+					<!--
+						Configure the docbkx plugin, which is a more fully featured DocBook converter than the one
+						included in Doxia. In particular, it does language-based syntax highlighting in programlisting
+						elements. This is run in the pre-site phase and generates its output to the html directory of
+						the generated site directory.
+					-->
+					<plugin>
+						<groupId>com.agilejava.docbkx</groupId>
+						<artifactId>docbkx-maven-plugin</artifactId>
+						<version>2.0.9</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>generate-html</goal>
+								</goals>
+								<phase>pre-site</phase>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>net.sf.docbook</groupId>
+								<artifactId>docbook-xml</artifactId>
+								<version>5.0-all</version>
+								<classifier>resources</classifier>
+								<type>zip</type>
+								<scope>runtime</scope>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<chunkedOutput>false</chunkedOutput>
+							<sourceDirectory>${basedir}/src/site/docbook</sourceDirectory>
+							<targetDirectory>${docbookTargetDirectory}</targetDirectory>
+							<generateMetaAbstract>0</generateMetaAbstract>
+							<highlightSource>1</highlightSource>
+							<highlightDefaultLanguage />
+							<htmlCustomization>${basedir}/src/site/xsl/html.xsl</htmlCustomization>
+							<imgSrcPath>./</imgSrcPath>
+							<htmlStylesheet>css/site.css</htmlStylesheet>
+							<htmlCellSpacing>2</htmlCellSpacing>
+							<htmlCellPadding>2</htmlCellPadding>
+							<suppressHeaderNavigation>1</suppressHeaderNavigation>
+							<suppressFooterNavigation>1</suppressFooterNavigation>
+							<tableBordersWithCss>true</tableBordersWithCss>
+							<tableFrameBorderThickness>0</tableFrameBorderThickness>
+							<tableCellBorderThickness>0</tableCellBorderThickness>
+							<targetFileExtension>html</targetFileExtension>
+							<!-- use extensions -->
+							<useExtensions>1</useExtensions>
+							<!-- callouts -->
+							<calloutsExtension>1</calloutsExtension>
+							<entities>
+								<entity>
+									<name>projectVersion</name>
+									<value>${project.version}</value>
+								</entity>
+							</entities>
+						</configuration>
+					</plugin>
+					<!--
+						Configure the HTML Filter Site plugin. This runs *after* the docbkx plugin in the pre-site
+						phase and runs Velocity on the files and makes them look more like Doxia-generated files
+						without stripping all the useful DocBook formatting like Doxia does. It first runs JTidy to
+						make the files XHTML-compliant. When version 2.0.10 of the docbkx plugin is released we can
+						generate XHTML and won't need the "tidy" goal.
+					-->
+					<plugin>
+						<groupId>org.kathrynhuxtable.maven.plugins</groupId>
+						<artifactId>htmlfilter-site-maven-plugin</artifactId>
+						<version>${project.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>tidy</goal>
+									<goal>filter</goal>
+								</goals>
+								<phase>pre-site</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<tidySourceDirectory>${docbookTargetDirectory}</tidySourceDirectory>
+							<tidyTargetDirectory>${docbookTargetDirectory}</tidyTargetDirectory>
+							<tidyFilePattern>**/*.html</tidyFilePattern>
+
+							<sourceDirectory>${docbookTargetDirectory}</sourceDirectory>
+							<filePattern>**/*.html</filePattern>
+							<targetDirectory>${project.build.directory}/generated-site/resources</targetDirectory>
+							<filterMacros>${basedir}/src/site/filter-template.vm</filterMacros>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<!--
 			Define the profile to be activated when performing a release. This makes sure all the
 			deliverables are signed with GPG.
@@ -323,5 +426,6 @@
 	<properties>
 		<!-- Define the default encoding. We want this to be platform independent. -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<docbookTargetDirectory>${project.build.directory}/generated-site/html</docbookTargetDirectory>
 	</properties>
 </project>

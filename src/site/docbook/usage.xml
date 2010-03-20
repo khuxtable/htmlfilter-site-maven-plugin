@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Converted by db4-upgrade version 1.0 -->
+<article version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:ns5="http://www.w3.org/1999/xhtml"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/2000/svg"
+         xmlns:ns="http://docbook.org/ns/docbook">
+  <info>
+    <title>Usage</title>
+
+    <author>
+      <personname><firstname>Kathryn</firstname><surname>Huxtable</surname></personname>
+
+      <affiliation>
+        <orgname>kathrynhuxtable.org</orgname>
+      </affiliation>
+    </author>
+
+    <pubdate>2010-03-20</pubdate>
+  </info>
+
+  <section>
+    <info>
+      <title>Usage</title>
+    </info>
+
+    <para>Using the HTML Filter Site Maven plugin you can tidy and filter HTML
+    files produced outside the normal site generation process. These files can
+    then be used in your site documentation.</para>
+
+    <section>
+      <info>
+        <title>Tidying HTML Files</title>
+      </info>
+
+      <para>You can run the goal directly by executing:</para>
+
+      <synopsis>mvn htmlfilter-site:tidy</synopsis>
+    </section>
+
+    <section>
+      <info>
+        <title>Filtering HTML Files</title>
+      </info>
+
+      <para>You can run the goal directly by executing:</para>
+
+      <synopsis>mvn htmlfilter-site:filter</synopsis>
+    </section>
+
+    <section>
+      <info>
+        <title>Binding the Goal or Goals to a Phase</title>
+      </info>
+
+      <para>It is better to bind the goal(s) to the <code>pre-site</code>
+      execution phase, thus:</para>
+
+      <programlisting language="xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.2&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;tidy&lt;/goal&gt;
+                &lt;goal&gt;filter&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;phase&gt;pre-site&lt;/phase&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+    ...
+&lt;/plugin&gt;</programlisting>
+
+      <para>That way you can simply execute:</para>
+
+      <synopsis><code>mvn site</code></synopsis>
+
+      <para>and the files will be tidied and/or filtered before your site
+      documentation.</para>
+    </section>
+  </section>
+</article>

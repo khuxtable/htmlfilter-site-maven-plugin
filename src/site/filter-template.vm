@@ -35,6 +35,7 @@
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
       @import url("./css/site.css");
+      @import url("./css/highlight.css");
     </style>
     <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
     <meta http-equiv="Content-Type" content="text/html; charset=$outputEncoding" />

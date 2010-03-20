@@ -147,3 +147,10 @@ dt {
   padding-bottom: 0.75em;
 }
 
+.synopsis {
+  padding: 12px;
+  margin: 1em 7px 1em 7px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #999999;
+}
