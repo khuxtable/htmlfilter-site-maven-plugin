@@ -39,23 +39,26 @@ a.newWindow, a.newWindow:link, a.newWindow:visited, a.newWindow:active, a.newWin
 }
 h2 {
   padding: 4px 4px 4px 6px;
-  border: 1px solid #999999;
+  border: none;
+  border-bottom: 1px solid #999999;
   color: #009560;
-  background-color: #ddeee0;
+  background-color: #ffffff;
   font-weight:900;
   font-size: x-large;
 }
 h3 {
   padding: 4px 4px 4px 6px;
-  border: 1px solid #aaa;
+  border: none;
+  border-bottom: 1px solid #aaa;
   color: #009560;
-  background-color: #eef4ee;
+  background-color: #ffffff;
   font-weight: normal;
   font-size: large;
 }
 h4 {
   padding: 4px 4px 4px 6px;
-  border: 1px solid #b8c4b8;
+  border: none;
+  border-bottom: 1px solid #b8c4b8;
   color: #009560;
   background-color: #ffffff;
   font-weight: normal;
@@ -83,7 +86,7 @@ p {
 #navcolumn h5 {
   font-size: smaller;
   border-bottom: 1px solid #aaaaaa;
-  padding-top: 2px;
+  padding-top: 0.5em;
   color: #000000;
 }
 
@@ -137,5 +140,10 @@ dt {
 
 .infomark {
   background-image: url(../images/icon_info_sml.gif);
+}
+
+#lastPublished {
+  font-size: x-small;
+  padding-bottom: 0.75em;
 }
 
