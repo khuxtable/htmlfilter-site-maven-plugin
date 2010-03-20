@@ -24,8 +24,8 @@
 		</menu>
 		
 		<menu name="Examples">
-            <item name="Tidy example" href="examples/tidy.html" />
             <item name="Filter example" href="examples/filter.html" />
+            <item name="Tidy example" href="examples/tidy.html" />
 		</menu>
 
 		<!-- <menu name="Generated Information" ref="reports"/> -->
