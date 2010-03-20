@@ -1,0 +1,103 @@
+    -----
+    Tidy Example
+    -----
+
+Tidy Example
+
+  Using the HTML Filter Site Maven plugin you can tidy HTML files
+  produced outside the normal site generation process. These files can then be used
+  in your site documentation.
+
+  You can run the goal directly by executing:
+  
++------
+mvn htmlfilter-site:tidy
++------
+
+  It is better to bind the goal to the <<<pre-site>>> execution phase, thus:
+
++------
+<plugin>
+    <groupId>org.kathrynhuxtable.maven.plugins</groupId>
+    <artifactId>htmlfilter-site-maven-plugin</artifactId>
+    <version>0.2</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>tidy</goal>
+            </goals>
+            <phase>pre-site</phase>
+        </execution>
+    </executions>
+    ...
+</plugin>
++------
+
+  That way you can simply execute:
+
++------
+mvn site
++------
+
+  and the files will be tidied before your site documentation.
+
+  By default, the source files are found in <<<${basedir}/site/html>>> and are tidied into
+  <<<$\{project.build.directory\}/generated-site/resources>>>,
+  which will be copied into your site documentation folder.
+  You can override this by specifying the <<<sourceDirectory>>> or <<<targetDirectory>>> parameter in the <<<configuration>>>
+  section of the plugin, as in the example below, or by specifying the
+  <<<$\{htmlfiltersite.sourceDirectory\}>>> or <<<$\{htmlfiltersite.targetDirectory\}>>> expression in your POM or on the command line.
+  
+  The source and target directories can be the same, in which case the tidied files will overwrite and replace the originals.
+  
+* A Full Example
+
+  The following is a complete example of using the HTML Filter Site Maven plugin to tidy a file.
+  
+** In the POM
+
++------
+<project>
+  ...
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>org.kathrynhuxtable.maven.plugins</groupId>
+        <artifactId>htmlfilter-site-maven-plugin</artifactId>
+        <version>0.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>tidy</goal>
+            </goals>
+            <phase>pre-site</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${basedir}/site/myhtml</sourceDirectory>
+          <targetDirectory>${project.build.directory}/generated-site/resources</targetDirectory>
+          <filePattern>**/*.html</filePattern>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+    ...
+  </build>
+  ...
+</project>  
++------
+
+  The example above binds the <<<tidy>>> goal to the <<<pre-site>>> phase,
+  causing it to run before the site documentation is created.
+
+  The <<<sourceDirectory>>> parameter overrides the default source directory.
+
+  The <<<targetDirectory>>> parameter overrides the default target directory.
+  
+  The <<<filePattern>>> parameter overrides the default pattern matching the files to be converted.
+  The value specified is actually the default value.
+
+~~ $Id$
+
+	
