@@ -41,21 +41,20 @@ mvn site
 
   and the files will be tidied before your site documentation.
 
-  By default, the source files are found in <<<${basedir}/site/html>>> and are tidied into
+  By default, the source files are found in <<<${basedir}/src/site/html>>> and are tidied into
   <<<$\{project.build.directory\}/generated-site/resources>>>,
   which will be copied into your site documentation folder.
-  You can override this by specifying the <<<sourceDirectory>>> or <<<targetDirectory>>> parameter in the <<<configuration>>>
+  You can override this by specifying the <<<tidySourceDirectory>>> or <<<tidyTargetDirectory>>> parameter in the <<<configuration>>>
   section of the plugin, as in the example below, or by specifying the
-  <<<$\{htmlfiltersite.sourceDirectory\}>>> or <<<$\{htmlfiltersite.targetDirectory\}>>> expression in your POM or on the command line.
+  <<<$\{htmlfiltersite.tidySourceDirectory\}>>> or <<<$\{htmlfiltersite.tidyTargetDirectory\}>>> expression in your POM
+  or on the command line.
   
   The source and target directories can be the same, in which case the tidied files will overwrite and replace the originals.
   
 * A Full Example
 
-  The following is a complete example of using the HTML Filter Site Maven plugin to tidy a file.
+  The following is a complete example of using the HTML Filter Site Maven plugin to tidy all the html files in a directory tree.
   
-** In the POM
-
 +------
 <project>
   ...
@@ -75,9 +74,9 @@ mvn site
           </execution>
         </executions>
         <configuration>
-          <sourceDirectory>${basedir}/site/myhtml</sourceDirectory>
-          <targetDirectory>${project.build.directory}/generated-site/resources</targetDirectory>
-          <filePattern>**/*.html</filePattern>
+          <tidySourceDirectory>${basedir}/src/site/myhtml</tidySourceDirectory>
+          <tidyTargetDirectory>${project.build.directory}/generated-site/resources</tidyTargetDirectory>
+          <tidyFilePattern>**/*.html</tidyFilePattern>
         </configuration>
       </plugin>
       ...
@@ -91,11 +90,11 @@ mvn site
   The example above binds the <<<tidy>>> goal to the <<<pre-site>>> phase,
   causing it to run before the site documentation is created.
 
-  The <<<sourceDirectory>>> parameter overrides the default source directory.
+  The <<<tidySourceDirectory>>> parameter overrides the default source directory.
 
-  The <<<targetDirectory>>> parameter overrides the default target directory.
+  The <<<tidyTargetDirectory>>> parameter overrides the default target directory.
   
-  The <<<filePattern>>> parameter overrides the default pattern matching the files to be converted.
+  The <<<tidyFilePattern>>> parameter overrides the default pattern matching the files to be converted.
   The value specified is actually the default value.
 
 ~~ $Id$
