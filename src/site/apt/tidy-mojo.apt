@@ -6,11 +6,15 @@ htmlfilter-site:tidy
 
 * Full name:
 
-  org.kathrynhuxtable.maven.plugins:htmlfilter-site-maven-plugin:1.0:tidy
+  org.kathrynhuxtable.maven.plugins:htmlfilter-site-maven-plugin:0.2:tidy
 
 * Description:
 
-  Tidies files in a directory by running JTidy on them to make them conform to XHTML standards.
+  Tidies files in a directory by running JTidy on them to make them conform to XHTML standards. The arguments to JTidy are:
+  
++-----
+-asxml -utf8  -indent -quiet
++-----
 
 * Attributes:
 
@@ -33,7 +37,7 @@ htmlfilter-site:tidy
  {{tidySourceDirectory}} | File     | -         | Directory containing the files to be tidied.\
                          |          |           | <<Default value is:>> <<<$\{basedir\}/src/site/html>>>
 *------------------------+----------+-----------+--------------+
- {{tidyTargetDirectory}} | File     | -         | Directory to place the tidied files. This can be the same as the source directory, in which case the source files will be replaced.
+ {{tidyTargetDirectory}} | File     | -         | Directory to place the tidied files. This can be the same as the source directory, in which case the source files will be replaced.\
                          |          |           | <<Default value is:>> <<<$\{project.build.directory\}/generated-site/resources>>>
 *------------------------+----------+-----------+--------------+
 
