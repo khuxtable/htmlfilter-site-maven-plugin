@@ -135,7 +135,7 @@
       </info>
 
       <para>The following link is a <link
-      xlink:href="filter-template.vm.example">sample Velocity template</link>
+      xlink:href="filter-template.html">sample Velocity template</link>
       that can be used to process files. Note that the file is not as complex
       as that used by Doxia. It doesn't read the <code>site.xml</code> file
       yet or create any decorations. You need to do that yourself. You can get
