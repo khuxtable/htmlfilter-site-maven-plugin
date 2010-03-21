@@ -9,6 +9,15 @@ Filter Template Example
 +------
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+#set ( $bannerLeftName "my.org" )
+#set ( $bannerLeftSrc "../../../externalimage/myorglogo.gif" )
+#set ( $bannerLeftHref" "http://my.org" )
+#set ( $bannerLeftAlt "my.org" )
+#set ( $bannerRightName "my app" )
+#set ( $bannerRightSrc "images/myapplogo.gif" )
+#set ( $bannerRightHref "" )
+#set ( $bannerRightAlt "" )
+
 #macro ( copyright )
   #if ( $project )
     #set ( $currentYear = ${currentDate.year} + 1900 )
@@ -84,16 +93,16 @@ Filter Template Example
   <body class="composite">
     <div id="page">
       <div id="banner">
-        #banner( "kathrynhuxtable.org" "../../../imagedir/kathrynhuxtable.org.gif" "http://www.kathrynhuxtable.org" "kathrynhuxtable.org" "bannerLeft" )
-        #banner( "HTML Filter Site Maven Plugin" "images/HTMLFilterSiteLogo.png" "" "" "bannerRight" )
+        #banner( $bannerLeftName $bannerLeftSrc $bannerLeftHref $bannerLeftAlt "bannerLeft" )
+        #banner( $bannerRightName $bannerRightSrc $bannerRightHref $bannerRightAlt "bannerRight" )
         <div class="clear"><hr/></div>
       </div>
       <div id="breadcrumbs">
         <div class="xleft">Version: ${project.version}</div>
         <div class="xright">
-          <a href="http://www.kathrynhuxtable.org/blog/projects" class="externalLink">Kathryn Huxtable's Projects</a>
+          <a href="http://blahblahblah.com" class="externalLink">First Link</a>
           |
-          <a href="http://www.kathrynhuxtable.org" class="externalLink">Kathryn Huxtable</a>
+          <a href="http://yaddayaddayadda.org" class="externalLink">Second Link</a>
         </div>
         <div class="clear"><hr/></div>
       </div>
