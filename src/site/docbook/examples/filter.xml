@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Converted by db4-upgrade version 1.0 -->
+<article version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:ns5="http://www.w3.org/1999/xhtml"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/2000/svg"
+         xmlns:ns="http://docbook.org/ns/docbook">
+  <info>
+    <title>Filter Example</title>
+
+    <author>
+      <personname><firstname>Kathryn</firstname><surname>Huxtable</surname></personname>
+
+      <affiliation>
+        <orgname>kathrynhuxtable.org</orgname>
+      </affiliation>
+    </author>
+
+    <pubdate>2010-03-20</pubdate>
+  </info>
+
+  <section>
+    <info>
+      <title>Filter Example</title>
+    </info>
+
+    <para>Using the HTML Filter Site Maven plugin you can Filter HTML files
+    produced outside the normal site generation process. These files can then
+    be used in your site documentation.</para>
+
+    <para>You can run the goal directly by executing:</para>
+
+    <synopsis>mvn htmlfilter-site:filter</synopsis>
+
+    <para>It is better to bind the goal to the <code>pre-site</code> execution
+    phase, thus:</para>
+
+    <programlisting language="xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.2&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;filter&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;phase&gt;pre-site&lt;/phase&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+    ...
+&lt;/plugin&gt;</programlisting>
+
+    <para>That way you can simply execute:</para>
+
+    <synopsis>mvn site</synopsis>
+
+    <para>and the files will be filtered before your site
+    documentation.</para>
+
+    <para>By default, the source files are found in
+    <code>${basedir}/site/html</code> and are filtered into
+    <code>$\{project.build.directory\}/generated-site/resources</code>, which
+    will be copied into your site documentation folder. You can override this
+    by specifying the <code>sourceDirectory</code> or
+    <code>targetDirectory</code> parameter in the <code>configuration</code>
+    section of the plugin, as in the example below, or by specifying the
+    <code>$\{htmlfiltersite.sourceDirectory\}</code> or
+    <code>$\{htmlfiltersite.targetDirectory\}</code> expression in your POM or
+    on the command line.</para>
+
+    <para>The source and target directories cannot at present be the
+    same.</para>
+
+    <section>
+      <info>
+        <title>A Full Example</title>
+      </info>
+
+      <para>The following is a complete example of using the HTML Filter Site
+      Maven plugin to filter all the html files in a directory tree.</para>
+
+      <programlisting language="xml">&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      ...
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;0.2&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;filter&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;phase&gt;pre-site&lt;/phase&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+        &lt;configuration&gt;
+          &lt;sourceDirectory&gt;${basedir}/src/site/myhtml&lt;/sourceDirectory&gt;
+          &lt;targetDirectory&gt;${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
+          &lt;filePattern&gt;**/*.html&lt;/filePattern&gt;
+          &lt;filterMacros&gt;${basedir}/src/site/filter-template.vm&lt;/filterMacros&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+    ...
+  &lt;/build&gt;
+  ...
+&lt;/project&gt;</programlisting>
+
+      <para>The example above binds the <code>tidy</code> goal to the
+      <code>pre-site</code> phase, causing it to run before the site
+      documentation is created.</para>
+
+      <para>The <code>sourceDirectory</code> parameter overrides the default
+      source directory.</para>
+
+      <para>The <code>targetDirectory</code> parameter overrides the default
+      target directory.</para>
+
+      <para>The <code>filePattern</code> parameter overrides the default
+      pattern matching the files to be converted. The value specified is
+      actually the default value.</para>
+
+      <para>The <code>filterMacros</code> parameter specifies the location of
+      the Velocity template to be used to process the file.</para>
+    </section>
+
+    <section>
+      <info>
+        <title>A Sample Velocity Template</title>
+      </info>
+
+      <para>The following link is a <link
+      xlink:href="filter-template.vm.example">sample Velocity template</link>
+      that can be used to process files. Note that the file is not as complex
+      as that used by Doxia. It doesn't read the <code>site.xml</code> file
+      yet or create any decorations. You need to do that yourself. You can get
+      the decorations for your project by copying from a Doxia-generated
+      report file. You'll need to do that each time you make changes to your
+      <code>site.xml</code> file, or when you add or remove a report.</para>
+    </section>
+  </section>
+</article>

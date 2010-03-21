@@ -144,7 +144,7 @@ public class FilterMojo extends AbstractMojo {
     /**
      * Set the filter macros file.
      *
-     * @param filterTemplate the filterTemplate to set
+     * @param filterMacros filterTemplate the filterTemplate to set
      */
     public void setFilterMacros(File filterMacros) {
         this.filterTemplate = filterMacros;
@@ -188,10 +188,6 @@ public class FilterMojo extends AbstractMojo {
         } catch (Exception e) {
             e.printStackTrace();
             throw new MojoExecutionException("Some random template parsing error occurred", e);
-        }
-        
-        if (!targetDirectory.exists()) {
-            targetDirectory.mkdirs();
         }
 
         AttributeMap filterProps;
@@ -241,6 +237,10 @@ public class FilterMojo extends AbstractMojo {
         File       targetFile = new File(targetDirectory, file);
         FileWriter fileWriter = null;
         Reader     fileReader = null;
+        
+        if (!targetFile.getParentFile().exists()) {
+            targetFile.getParentFile().mkdirs();
+        }
 
         VelocityContext context = createContext(sourceFile, attributes);
 
@@ -358,19 +358,21 @@ public class FilterMojo extends AbstractMojo {
      * @return DOCUMENT ME!
      */
     private VelocityContext createContext(File sourceFile, AttributeMap attributes) {
-        VelocityContext context = new VelocityContext();
+        VelocityContext context      = new VelocityContext();
 
         // ----------------------------------------------------------------------
         // Data objects
         // ----------------------------------------------------------------------
 
-        context.put("relativePath", ".");
+        String          relativePath = PathTool.getRelativePath(sourceDirectory.getPath(), sourceFile.getPath());
+
+        context.put("relativePath", relativePath);
 
         String currentFileName = sourceFile.getName();
 
         context.put("currentFileName", currentFileName);
 
-        context.put("alignedFileName", PathTool.calculateLink(currentFileName, ".")); // renderingContext.getRelativePath()));
+        context.put("alignedFileName", PathTool.calculateLink(currentFileName, relativePath));
 
         // Add global properties.
         if (attributes != null) {

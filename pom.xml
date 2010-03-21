@@ -330,6 +330,7 @@
 						<configuration>
 							<chunkedOutput>false</chunkedOutput>
 							<sourceDirectory>${basedir}/src/site/docbook</sourceDirectory>
+							<includes>**/*.xml</includes>
 							<targetDirectory>${docbookTargetDirectory}</targetDirectory>
 							<generateMetaAbstract>0</generateMetaAbstract>
 							<highlightSource>1</highlightSource>
