@@ -95,12 +95,6 @@
        &lt;useExtensions&gt;1&lt;/useExtensions&gt;
        &lt;!-- callouts --&gt;
        &lt;calloutsExtension&gt;1&lt;/calloutsExtension&gt;
-       &lt;entities&gt;
-        &lt;entity&gt;
-         &lt;name&gt;projectVersion&lt;/name&gt;
-         &lt;value&gt;${project.version}&lt;/value&gt;
-        &lt;/entity&gt;
-       &lt;/entities&gt;
       &lt;/configuration&gt;
      &lt;/plugin&gt;
       &lt;plugin&gt;
@@ -117,14 +111,18 @@
           &lt;/execution&gt;
         &lt;/executions&gt;
         &lt;configuration&gt;
-       &lt;tidySourceDirectory&gt;\${project.build.directory}/generated-site/html&lt;/tidySourceDirectory&gt;
-       &lt;tidyTargetDirectory&gt;\${project.build.directory}/generated-site/tidy&lt;/tidyTargetDirectory&gt;
-       &lt;tidyFilePattern&gt;**/*.html,**/*.xm.html&lt;/tidyFilePattern&gt;
+         &lt;!--
+             Note that docbkx removes the last four characters of the filename, presumably ".xml",
+             and replaces them with ".html". If the file ends in ".xml.vm" instead, we get ".xm.html".
+         --&gt;
+         &lt;tidySourceDirectory&gt;\${project.build.directory}/generated-site/html&lt;/tidySourceDirectory&gt;
+         &lt;tidyTargetDirectory&gt;\${project.build.directory}/generated-site/tidy&lt;/tidyTargetDirectory&gt;
+         &lt;tidyFilePattern&gt;**/*.html,**/*.xm.html&lt;/tidyFilePattern&gt;
 
-       &lt;sourceDirectory&gt;\${project.build.directory}/generated-site/tidy&lt;/sourceDirectory&gt;
-       &lt;filePattern&gt;**/*.html,**/*.xm.html&lt;/filePattern&gt;
-       &lt;filterExtension&gt;.xm.html&lt;/filterExtension&gt;
-       &lt;targetDirectory&gt;\${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
+         &lt;sourceDirectory&gt;\${project.build.directory}/generated-site/tidy&lt;/sourceDirectory&gt;
+         &lt;filePattern&gt;**/*.html,**/*.xm.html&lt;/filePattern&gt;
+         &lt;filterExtension&gt;.xm.html&lt;/filterExtension&gt;
+         &lt;targetDirectory&gt;\${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
       ...
