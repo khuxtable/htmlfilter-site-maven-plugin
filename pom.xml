@@ -180,6 +180,21 @@
 			<artifactId>jaxen</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-doxia-tools</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.codehaus.plexus</groupId>
+		  <artifactId>plexus-utils</artifactId>
+		  <version>1.5.1</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.maven.doxia</groupId>
+		  <artifactId>doxia-decoration-model</artifactId>
+		  <version>1.1.2</version>
+		</dependency>
 	</dependencies>
 	<distributionManagement>
 		<!-- Site to deploy releases to. -->
@@ -342,7 +357,7 @@
 							<chunkedOutput>false</chunkedOutput>
 							<sourceDirectory>${basedir}/src/site/docbook</sourceDirectory>
 							<includes>**/*.xml</includes>
-							<targetDirectory>${docbookTargetDirectory}</targetDirectory>
+							<targetDirectory>${project.build.directory}/generated-site/html</targetDirectory>
 							<generateMetaAbstract>0</generateMetaAbstract>
 							<highlightSource>1</highlightSource>
 							<highlightDefaultLanguage />
@@ -390,14 +405,13 @@
 							</execution>
 						</executions>
 						<configuration>
-							<tidySourceDirectory>${docbookTargetDirectory}</tidySourceDirectory>
-							<tidyTargetDirectory>${docbookTargetDirectory}</tidyTargetDirectory>
+							<tidySourceDirectory>${project.build.directory}/generated-site/html</tidySourceDirectory>
+							<tidyTargetDirectory>${project.build.directory}/generated-site/tidy</tidyTargetDirectory>
 							<tidyFilePattern>**/*.html</tidyFilePattern>
 
-							<sourceDirectory>${docbookTargetDirectory}</sourceDirectory>
+							<sourceDirectory>${project.build.directory}/generated-site/tidy</sourceDirectory>
 							<filePattern>**/*.html</filePattern>
 							<targetDirectory>${project.build.directory}/generated-site/resources</targetDirectory>
-							<filterMacros>${basedir}/src/site/filter-template.vm</filterMacros>
 						</configuration>
 					</plugin>
 				</plugins>

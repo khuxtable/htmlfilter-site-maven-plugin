@@ -31,13 +31,19 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.doxia.site.decoration.DecorationModel;
+import org.apache.maven.doxia.tools.SiteTool;
+import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -49,8 +55,12 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
+import org.codehaus.plexus.i18n.DefaultI18N;
+import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.PathTool;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
 import org.jdom.Document;
@@ -75,19 +85,54 @@ import org.jdom.xpath.XPath;
 public class FilterMojo extends AbstractMojo {
 
     /**
-     * Velocity template for filtering.
+     * Specifies the input encoding.
      *
-     * @parameter expression="${htmlfiltersite.filterTemplate}"
-     *            default-value="${basedir}/src/site/filter-template.vm"
+     * @parameter expression="${encoding}"
+     *            default-value="${project.build.sourceEncoding}"
      */
-    private File filterTemplate;
+    private String inputEncoding;
 
     /**
-     * Velocity template.
+     * Specifies the output encoding.
      *
-     * @parameter expression="${htmlfiltersite.filterProperties}"
+     * @parameter expression="${outputEncoding}"
+     *            default-value="${project.reporting.outputEncoding}"
      */
-    private File filterProperties;
+    private String outputEncoding;
+
+    /**
+     * Remote repositories used for the project.
+     *
+     * @todo      this is used for site descriptor resolution - it should relate
+     *            to the actual project but for some reason they are not always
+     *            filled in
+     * @parameter expression="${project.remoteArtifactRepositories}"
+     */
+    protected List<?> repositories;
+
+    /**
+     * The local repository.
+     *
+     * @parameter expression="${localRepository}"
+     */
+    protected ArtifactRepository localRepository;
+
+    /**
+     * Match pattern for the files to be processed..
+     *
+     * @parameter expression="${htmlfiltersite.filePattern}"
+     *            default-value="**\/*.html"
+     */
+    private String filePattern;
+
+    /**
+     * Directory containing the site.xml file and the source for apt, fml and
+     * xdoc docs, e.g. ${basedir}/src/site.
+     *
+     * @parameter expression="$htmlfiltersite.siteDirectory}"
+     * @required
+     */
+    private File siteDirectory;
 
     /**
      * Location of the source directory.
@@ -106,12 +151,12 @@ public class FilterMojo extends AbstractMojo {
     private File targetDirectory;
 
     /**
-     * Match pattern for the files to be processed..
+     * Velocity template for filtering.
      *
-     * @parameter expression="${htmlfiltersite.filePattern}"
-     *            default-value="**\/*.html"
+     * @parameter expression="${htmlfiltersite.templateFile}"
+     *            default-value="${basedir}/src/site/site.vm"
      */
-    private String filePattern;
+    private File templateFile;
 
     /**
      * The maven project.
@@ -122,55 +167,126 @@ public class FilterMojo extends AbstractMojo {
      */
     protected MavenProject project;
 
+    /** Internationalization element. */
+    private I18N i18n = new DefaultI18N();
+
     /**
-     * Set the source directory.
+     * The reactor projects.
      *
-     * @param sourceDirectory the sourceDirectory to set
+     * @parameter expression="${reactorProjects}"
+     * @required
+     * @readonly
      */
-    public void setSourceDirectory(File sourceDirectory) {
-        this.sourceDirectory = sourceDirectory;
+    protected List<?> reactorProjects;
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @component
+     */
+    private SiteTool siteTool;
+
+    /**
+     * Gets the input files encoding.
+     *
+     * @return The input files encoding, never <code>null</code>.
+     */
+    protected String getInputEncoding() {
+        return (inputEncoding == null) ? ReaderFactory.ISO_8859_1 : inputEncoding;
     }
 
     /**
-     * Set the target directory.
+     * Gets the effective reporting output files encoding.
      *
-     * @param targetDirectory the targetDirectory to set
+     * @return The effective reporting output file encoding, never <code>
+     *         null</code>.
      */
-    public void setTargetDirectory(File targetDirectory) {
-        this.targetDirectory = targetDirectory;
-    }
-
-    /**
-     * Set the file pattern.
-     *
-     * @param filePattern the filePattern to set
-     */
-    public void setFilePattern(String filePattern) {
-        this.filePattern = filePattern;
-    }
-
-    /**
-     * Set the filter macros file.
-     *
-     * @param filterMacros filterTemplate the filterTemplate to set
-     */
-    public void setFilterMacros(File filterMacros) {
-        this.filterTemplate = filterMacros;
-    }
-
-    /**
-     * Set the filter properties file.
-     *
-     * @param filterProperties the filterProperties to set
-     */
-    public void setFilterProperties(File filterProperties) {
-        this.filterProperties = filterProperties;
+    protected String getOutputEncoding() {
+        return (outputEncoding == null) ? ReaderFactory.UTF_8 : outputEncoding;
     }
 
     /**
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute() throws MojoExecutionException {
+        VelocityEngine ve         = initializeVelocityEngine();
+        Template       template   = getVelocityTemplate(ve);
+        AttributeMap   attributes = new AttributeMap();
+
+        try {
+            ((DefaultI18N) i18n).initialize();
+        } catch (InitializationException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        if (attributes.get("project") == null) {
+            attributes.put("project", project);
+        }
+
+        // Put any of the properties in directly into the Velocity attributes
+        attributes.putAll(project.getProperties());
+
+        if (attributes.get("inputEncoding") == null) {
+            attributes.put("inputEncoding", getInputEncoding());
+        }
+
+        if (attributes.get("outputEncoding") == null) {
+            attributes.put("outputEncoding", getOutputEncoding());
+        }
+
+        DecorationModel decorationModel;
+
+        try {
+            decorationModel = siteTool.getDecorationModel(project, reactorProjects, localRepository, repositories,
+                                                          toRelative(project.getBasedir(), siteDirectory.getAbsolutePath()),
+                                                          Locale.getDefault(), getInputEncoding(), getOutputEncoding());
+        } catch (SiteToolException e) {
+            throw new MojoExecutionException("SiteToolException: " + e.getMessage(), e);
+        }
+
+        attributes.put("currentDate", new Date());
+
+        attributes.put("lastPublished", new SimpleDateFormat("dd MMM yyyy").format(new Date()));
+
+        List<String> fileList = getFileList();
+
+        for (String file : fileList) {
+            filterFile(file, ve, template, decorationModel, attributes);
+        }
+    }
+
+    /**
+     * TODO should be removed see PLXUTILS-61
+     *
+     * @param  basedir
+     * @param  absolutePath
+     *
+     * @return
+     */
+    private static String toRelative(File basedir, String absolutePath) {
+        String relative;
+
+        absolutePath = absolutePath.replace('\\', '/');
+        String basedirPath = basedir.getAbsolutePath().replace('\\', '/');
+
+        if (absolutePath.startsWith(basedirPath)) {
+            relative = absolutePath.substring(basedirPath.length() + 1);
+        } else {
+            relative = absolutePath;
+        }
+
+        return relative;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return
+     *
+     * @throws MojoExecutionException
+     */
+    private VelocityEngine initializeVelocityEngine() throws MojoExecutionException {
         VelocityEngine ve = new VelocityEngine();
 
         try {
@@ -180,10 +296,23 @@ public class FilterMojo extends AbstractMojo {
             throw new MojoExecutionException("Unable to initialize Velocity engine", e);
         }
 
+        return ve;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  ve
+     *
+     * @return
+     *
+     * @throws MojoExecutionException
+     */
+    private Template getVelocityTemplate(VelocityEngine ve) throws MojoExecutionException {
         Template template = null;
 
         try {
-            template = ve.getTemplate(getRelativeFilePath(new File(System.getProperty("user.dir")), filterTemplate));
+            template = ve.getTemplate(getRelativeFilePath(new File(System.getProperty("user.dir")), templateFile));
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
             throw new MojoExecutionException("Unable to locate template " + "htmlfiltersite.vm", e);
@@ -198,48 +327,21 @@ public class FilterMojo extends AbstractMojo {
             throw new MojoExecutionException("Some random template parsing error occurred", e);
         }
 
-        AttributeMap filterProps;
-
-        if (filterProperties != null) {
-            filterProps = parseConfigFile(filterProperties);
-        } else {
-            filterProps = new AttributeMap();
-        }
-
-        AttributeMap attributes = new AttributeMap();
-
-        if (attributes.get("project") == null) {
-            attributes.put("project", project);
-        }
-
-        attributes.put("outputEncoding", "UTF-8");
-
-        // Put any of the properties in directly into the Velocity attributes
-        attributes.putAll(project.getProperties());
-
-        attributes.put("currentDate", new Date());
-
-        attributes.put("lastPublished", new SimpleDateFormat("dd MMM yyyy").format(new Date()));
-
-        List<String> fileList = getFileList();
-
-        for (String file : fileList) {
-            filterFile(file, ve, template, attributes, filterProps);
-        }
+        return template;
     }
 
     /**
      * DOCUMENT ME!
      *
      * @param  file
-     * @param  ve          TODO
-     * @param  template    ve
+     * @param  ve              TODO
+     * @param  template        ve
+     * @param  decorationModel TODO
      * @param  attributes
-     * @param  filterProps TODO
      *
      * @throws MojoExecutionException
      */
-    private void filterFile(String file, VelocityEngine ve, Template template, AttributeMap attributes, AttributeMap filterProps)
+    private void filterFile(String file, VelocityEngine ve, Template template, DecorationModel decorationModel, AttributeMap attributes)
         throws MojoExecutionException {
         File       sourceFile = new File(sourceDirectory, file);
         File       targetFile = new File(targetDirectory, file);
@@ -250,34 +352,25 @@ public class FilterMojo extends AbstractMojo {
             targetFile.getParentFile().mkdirs();
         }
 
-        VelocityContext context = createContext(sourceFile, attributes);
+        VelocityContext context = createContext(sourceFile, decorationModel, attributes);
 
         try {
-            StringWriter sw = null;
-
-            for (Object key : filterProps.keySet()) {
-                sw = new StringWriter();
-                if (!ve.evaluate(context, sw, "htmlfilter-site", new StringReader((String) filterProps.get(key)))) {
-                    throw new MojoExecutionException("Unable to evaluate filter property " + key);
-                }
-
-                context.put((String) key, sw.toString());
-            }
+            StringWriter sw = new StringWriter();
 
             fileReader = new InputStreamReader(new FileInputStream(sourceFile), "UTF-8");
-            sw         = new StringWriter();
+            // TODO (only) If file ends in .vm filter it through Velocity before merging with template.
+            if (true) {
+                if (!ve.evaluate(context, sw, "htmlfilter-site", fileReader)) {
+                    throw new MojoExecutionException("Unable to evaluate html file " + sourceFile);
+                }
 
-            if (!ve.evaluate(context, sw, "htmlfilter-site", fileReader)) {
-                throw new MojoExecutionException("Unable to evaluate html file " + sourceFile);
+                closeReader(fileReader);
+                fileReader = new StringReader(sw.toString());
             }
 
-            Document doc = parseXHTMLDocument(new StringReader(sw.toString()));
+            Document doc = parseXHTMLDocument(fileReader);
 
-            context.put("title", getTitle(doc));
-
-            String bodyContent = getBodyContent(doc);
-
-            context.put("bodyContent", bodyContent);
+            addInfoFromDocument(context, decorationModel, doc);
 
             fileWriter = new FileWriter(targetFile);
 
@@ -286,18 +379,78 @@ public class FilterMojo extends AbstractMojo {
             e.printStackTrace();
             throw new MojoExecutionException("Unable to merge Velocity", e);
         } finally {
-            if (fileReader != null) {
-                try {
-                    fileReader.close();
-                } catch (IOException e) {
-                }
-            }
+            closeReader(fileReader);
+            closeWriter(fileWriter);
+        }
+    }
 
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                }
+    /**
+     * DOCUMENT ME!
+     *
+     * @param context         DOCUMENT ME!
+     * @param decorationModel DOCUMENT ME!
+     * @param doc             DOCUMENT ME!
+     */
+    private void addInfoFromDocument(VelocityContext context, DecorationModel decorationModel, Document doc) {
+        // Add infos from document
+// context.put("authors", getAuthors(doc));
+
+        String title = "";
+
+        if (decorationModel.getName() != null) {
+            title = decorationModel.getName();
+        } else if (project.getName() != null) {
+            title = project.getName();
+        }
+
+        if (title.length() > 0) {
+            title += " - ";
+        }
+
+        title += getTitle(doc);
+
+        context.put("title", title);
+
+        context.put("headContent", getHeadContent(doc));
+
+        context.put("bodyContent", getBodyContent(doc));
+
+// SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+// if (StringUtils.isNotEmpty(sink.getDate())) {
+// try {
+// // we support only ISO-8601 date
+// context.put("dateCreation", sdf.format(new SimpleDateFormat("yyyy-MM-dd").parse(sink.getDate())));
+// } catch (java.text.ParseException e) {
+// getLog().debug("Could not parse date: " + sink.getDate() + ", ignoring!", e);
+// }
+// }
+    }
+
+    /**
+     * Close a Reader ignoring any exception.
+     *
+     * @param reader the reader to close.
+     */
+    private void closeReader(Reader reader) {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
+     * Close a Writer ignoring any exceptions.
+     *
+     * @param writer the Writer to close.
+     */
+    private void closeWriter(FileWriter writer) {
+        if (writer != null) {
+            try {
+                writer.close();
+            } catch (IOException e) {
             }
         }
     }
@@ -360,12 +513,13 @@ public class FilterMojo extends AbstractMojo {
     /**
      * DOCUMENT ME!
      *
-     * @param  sourceFile DOCUMENT ME!
-     * @param  attributes siteRenderingContext DOCUMENT ME!
+     * @param  sourceFile      DOCUMENT ME!
+     * @param  decorationModel TODO
+     * @param  attributes      siteRenderingContext DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    private VelocityContext createContext(File sourceFile, AttributeMap attributes) {
+    private VelocityContext createContext(File sourceFile, DecorationModel decorationModel, AttributeMap attributes) {
         VelocityContext context      = new VelocityContext();
 
         // ----------------------------------------------------------------------
@@ -376,11 +530,25 @@ public class FilterMojo extends AbstractMojo {
 
         context.put("relativePath", relativePath);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+        context.put("dateRevision", sdf.format(new Date()));
+
+        context.put("decoration", decorationModel);
+
+        context.put("currentDate", new Date());
+
+        Locale locale = Locale.getDefault();
+
+        context.put("dateFormat", DateFormat.getDateInstance(DateFormat.DEFAULT, locale));
+
         String currentFileName = sourceFile.getName();
 
         context.put("currentFileName", currentFileName);
 
         context.put("alignedFileName", PathTool.calculateLink(getRelativeFilePath(sourceDirectory, sourceFile), relativePath));
+
+        context.put("locale", locale);
 
         // Add global properties.
         if (attributes != null) {
@@ -398,6 +566,8 @@ public class FilterMojo extends AbstractMojo {
         context.put("FileUtils", new FileUtils());
 
         context.put("StringUtils", new StringUtils());
+
+        context.put("i18n", i18n);
 
         return context;
     }
@@ -454,6 +624,24 @@ public class FilterMojo extends AbstractMojo {
         Element element = null;
 
         element = selectSingleNode(document.getRootElement(), "/xhtml:html/xhtml:body");
+        if (element == null) {
+            return null;
+        }
+
+        return getElementContentsAsText(element);
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  document DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    private String getHeadContent(Document document) {
+        Element element = null;
+
+        element = selectSingleNode(document.getRootElement(), "/xhtml:html/xhtml:head");
         if (element == null) {
             return null;
         }
