@@ -76,11 +76,11 @@ import org.jdom.xpath.XPath;
  *
  * @description                  Runs Velocity on the files in the specified
  *                               directory.
- * @goal                         filter
+ * @goal                         merge
  * @phase                        pre-site
  * @requiresDependencyResolution runtime
  */
-public class FilterMojo extends AbstractMojo {
+public class MergeMojo extends AbstractMojo {
 
     /**
      * Specifies the input encoding.
