@@ -356,7 +356,7 @@
 						<configuration>
 							<chunkedOutput>false</chunkedOutput>
 							<sourceDirectory>${basedir}/src/site/docbook</sourceDirectory>
-							<includes>**/*.xml</includes>
+							<includes>**/*.xml,**/*.xml.vm</includes>
 							<targetDirectory>${project.build.directory}/generated-site/html</targetDirectory>
 							<generateMetaAbstract>0</generateMetaAbstract>
 							<highlightSource>1</highlightSource>
@@ -406,10 +406,11 @@
 						<configuration>
 							<tidySourceDirectory>${project.build.directory}/generated-site/html</tidySourceDirectory>
 							<tidyTargetDirectory>${project.build.directory}/generated-site/tidy</tidyTargetDirectory>
-							<tidyFilePattern>**/*.html</tidyFilePattern>
+							<tidyFilePattern>**/*.html,**/*.xm.html</tidyFilePattern>
 
 							<sourceDirectory>${project.build.directory}/generated-site/tidy</sourceDirectory>
-							<filePattern>**/*.html</filePattern>
+							<filePattern>**/*.html,**/*.xm.html</filePattern>
+							<filterExtension>.xm.html</filterExtension>
 							<targetDirectory>${project.build.directory}/generated-site/resources</targetDirectory>
 						</configuration>
 					</plugin>

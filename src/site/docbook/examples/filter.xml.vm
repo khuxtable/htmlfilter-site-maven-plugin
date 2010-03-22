@@ -39,7 +39,7 @@
     <programlisting language="xml">&lt;plugin&gt;
     &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
     &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
-    &lt;version&gt;0.2&lt;/version&gt;
+    &lt;version&gt;${project.version}&lt;/version&gt;
     &lt;executions&gt;
         &lt;execution&gt;
             &lt;goals&gt;
@@ -88,7 +88,7 @@
       &lt;plugin&gt;
         &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
         &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;0.2&lt;/version&gt;
+        &lt;version&gt;${project.version}&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;goals&gt;
@@ -101,7 +101,6 @@
           &lt;sourceDirectory&gt;${basedir}/src/site/myhtml&lt;/sourceDirectory&gt;
           &lt;targetDirectory&gt;\${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
           &lt;filePattern&gt;**/*.html&lt;/filePattern&gt;
-          &lt;filterMacros&gt;${basedir}/src/site/filter-template.vm&lt;/filterMacros&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
       ...
@@ -124,9 +123,6 @@
       <para>The <code>filePattern</code> parameter overrides the default
       pattern matching the files to be converted. The value specified is
       actually the default value.</para>
-
-      <para>The <code>filterMacros</code> parameter specifies the location of
-      the Velocity template to be used to process the file.</para>
     </section>
 
     <section>
