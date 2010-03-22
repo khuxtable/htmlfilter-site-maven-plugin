@@ -363,7 +363,6 @@
 							<highlightDefaultLanguage />
 							<htmlCustomization>${basedir}/src/site/xsl/html.xsl</htmlCustomization>
 							<imgSrcPath>./</imgSrcPath>
-							<htmlStylesheet>css/site.css</htmlStylesheet>
 							<htmlCellSpacing>2</htmlCellSpacing>
 							<htmlCellPadding>2</htmlCellPadding>
 							<suppressHeaderNavigation>1</suppressHeaderNavigation>
@@ -452,6 +451,5 @@
 	<properties>
 		<!-- Define the default encoding. We want this to be platform independent. -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<docbookTargetDirectory>${project.build.directory}/generated-site/html</docbookTargetDirectory>
 	</properties>
 </project>

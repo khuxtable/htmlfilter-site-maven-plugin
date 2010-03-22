@@ -21,8 +21,6 @@ package org.kathrynhuxtable.maven.plugins.htmlfiltersite;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -129,8 +127,8 @@ public class FilterMojo extends AbstractMojo {
      * Directory containing the site.xml file and the source for apt, fml and
      * xdoc docs, e.g. ${basedir}/src/site.
      *
-     * @parameter expression="$htmlfiltersite.siteDirectory}"
-     * @required
+     * @parameter expression="${htmlfiltersite.siteDirectory}"
+     *            default-value="${basedir}/src/site"
      */
     private File siteDirectory;
 
@@ -167,7 +165,7 @@ public class FilterMojo extends AbstractMojo {
      */
     protected MavenProject project;
 
-    /** Internationalization element. */
+    /** Plexis internationalization element. */
     private I18N i18n = new DefaultI18N();
 
     /**
@@ -187,12 +185,48 @@ public class FilterMojo extends AbstractMojo {
     private SiteTool siteTool;
 
     /**
+     * DOCUMENT ME!
+     *
+     * @return the project
+     */
+    public MavenProject getProject() {
+        return project;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param project the project to set
+     */
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    /**
      * Gets the input files encoding.
      *
      * @return The input files encoding, never <code>null</code>.
      */
     protected String getInputEncoding() {
         return (inputEncoding == null) ? ReaderFactory.ISO_8859_1 : inputEncoding;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param inputEncoding the inputEncoding to set
+     */
+    public void setInputEncoding(String inputEncoding) {
+        this.inputEncoding = inputEncoding;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param outputEncoding the outputEncoding to set
+     */
+    public void setOutputEncoding(String outputEncoding) {
+        this.outputEncoding = outputEncoding;
     }
 
     /**
@@ -206,6 +240,96 @@ public class FilterMojo extends AbstractMojo {
     }
 
     /**
+     * DOCUMENT ME!
+     *
+     * @param repositories the repositories to set
+     */
+    public void setRepositories(List<?> repositories) {
+        this.repositories = repositories;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param localRepository the localRepository to set
+     */
+    public void setLocalRepository(ArtifactRepository localRepository) {
+        this.localRepository = localRepository;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param filePattern the filePattern to set
+     */
+    public void setFilePattern(String filePattern) {
+        this.filePattern = filePattern;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param siteDirectory the siteDirectory to set
+     */
+    public void setSiteDirectory(File siteDirectory) {
+        this.siteDirectory = siteDirectory;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param sourceDirectory the sourceDirectory to set
+     */
+    public void setSourceDirectory(File sourceDirectory) {
+        this.sourceDirectory = sourceDirectory;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param targetDirectory the targetDirectory to set
+     */
+    public void setTargetDirectory(File targetDirectory) {
+        this.targetDirectory = targetDirectory;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param templateFile the templateFile to set
+     */
+    public void setTemplateFile(File templateFile) {
+        this.templateFile = templateFile;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param i18n the i18n to set
+     */
+    public void setI18n(I18N i18n) {
+        this.i18n = i18n;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param reactorProjects the reactorProjects to set
+     */
+    public void setReactorProjects(List<?> reactorProjects) {
+        this.reactorProjects = reactorProjects;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param siteTool the siteTool to set
+     */
+    public void setSiteTool(SiteTool siteTool) {
+        this.siteTool = siteTool;
+    }
+
+    /**
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute() throws MojoExecutionException {
@@ -215,9 +339,9 @@ public class FilterMojo extends AbstractMojo {
 
         try {
             ((DefaultI18N) i18n).initialize();
-        } catch (InitializationException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (InitializationException e) {
+            e.printStackTrace();
+            throw new MojoExecutionException("Unable to initialize I18N object", e);
         }
 
         if (attributes.get("project") == null) {
@@ -239,7 +363,7 @@ public class FilterMojo extends AbstractMojo {
 
         try {
             decorationModel = siteTool.getDecorationModel(project, reactorProjects, localRepository, repositories,
-                                                          toRelative(project.getBasedir(), siteDirectory.getAbsolutePath()),
+                                                          getRelativeFilePath(project.getBasedir(), siteDirectory),
                                                           Locale.getDefault(), getInputEncoding(), getOutputEncoding());
         } catch (SiteToolException e) {
             throw new MojoExecutionException("SiteToolException: " + e.getMessage(), e);
@@ -254,29 +378,6 @@ public class FilterMojo extends AbstractMojo {
         for (String file : fileList) {
             filterFile(file, ve, template, decorationModel, attributes);
         }
-    }
-
-    /**
-     * TODO should be removed see PLXUTILS-61
-     *
-     * @param  basedir
-     * @param  absolutePath
-     *
-     * @return
-     */
-    private static String toRelative(File basedir, String absolutePath) {
-        String relative;
-
-        absolutePath = absolutePath.replace('\\', '/');
-        String basedirPath = basedir.getAbsolutePath().replace('\\', '/');
-
-        if (absolutePath.startsWith(basedirPath)) {
-            relative = absolutePath.substring(basedirPath.length() + 1);
-        } else {
-            relative = absolutePath;
-        }
-
-        return relative;
     }
 
     /**
@@ -312,10 +413,10 @@ public class FilterMojo extends AbstractMojo {
         Template template = null;
 
         try {
-            template = ve.getTemplate(getRelativeFilePath(new File(System.getProperty("user.dir")), templateFile));
+            template = ve.getTemplate(getRelativeFilePath(project.getBasedir(), templateFile));
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
-            throw new MojoExecutionException("Unable to locate template " + "htmlfiltersite.vm", e);
+            throw new MojoExecutionException("Unable to locate template " + templateFile, e);
         } catch (ParseErrorException e) {
             e.printStackTrace();
             throw new MojoExecutionException("Problem parsing the template", e);
@@ -370,7 +471,7 @@ public class FilterMojo extends AbstractMojo {
 
             Document doc = parseXHTMLDocument(fileReader);
 
-            addInfoFromDocument(context, decorationModel, doc);
+            addInfoFromDocument(context, decorationModel, doc, null);
 
             fileWriter = new FileWriter(targetFile);
 
@@ -390,10 +491,10 @@ public class FilterMojo extends AbstractMojo {
      * @param context         DOCUMENT ME!
      * @param decorationModel DOCUMENT ME!
      * @param doc             DOCUMENT ME!
+     * @param createDate      TODO
      */
-    private void addInfoFromDocument(VelocityContext context, DecorationModel decorationModel, Document doc) {
-        // Add infos from document
-// context.put("authors", getAuthors(doc));
+    private void addInfoFromDocument(VelocityContext context, DecorationModel decorationModel, Document doc, Date createDate) {
+        context.put("authors", getAuthors(doc));
 
         String title = "";
 
@@ -415,16 +516,11 @@ public class FilterMojo extends AbstractMojo {
 
         context.put("bodyContent", getBodyContent(doc));
 
-// SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-// if (StringUtils.isNotEmpty(sink.getDate())) {
-// try {
-// // we support only ISO-8601 date
-// context.put("dateCreation", sdf.format(new SimpleDateFormat("yyyy-MM-dd").parse(sink.getDate())));
-// } catch (java.text.ParseException e) {
-// getLog().debug("Could not parse date: " + sink.getDate() + ", ignoring!", e);
-// }
-// }
+        if (createDate != null) {
+            context.put("dateCreation", sdf.format(createDate));
+        }
     }
 
     /**
@@ -620,6 +716,49 @@ public class FilterMojo extends AbstractMojo {
      *
      * @return DOCUMENT ME!
      */
+    private List<String> getAuthors(Document document) {
+        List<Element> nl   = getXPathList(document, "/xhtml:html/xhtml:head/xhtml:meta[@class='author']");
+        List<String>  list = new ArrayList<String>();
+
+        for (Element elem : nl) {
+            String author = selectSingleNode(elem, "xhtml:td[@class='author']").getText();
+
+            list.add(author);
+        }
+
+        return list;
+    }
+
+    /**
+     * Extract a list matching an XPath path. This surreptitiously adds the
+     * XHTML namespace.
+     *
+     * @param  document DOCUMENT ME!
+     * @param  path     the path to select.
+     *
+     * @return the list of elements matching the path.
+     */
+    @SuppressWarnings("unchecked")
+    protected List<Element> getXPathList(Document document, String path) {
+        try {
+            XPath xpath = XPath.newInstance(path);
+
+            xpath.addNamespace("xhtml", "http://www.w3.org/1999/xhtml");
+            List<Element> nl = (List<Element>) xpath.selectNodes(document);
+
+            return nl;
+        } catch (JDOMException e) {
+            return new ArrayList<Element>();
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  document DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
     private String getBodyContent(Document document) {
         Element element = null;
 
@@ -716,51 +855,6 @@ public class FilterMojo extends AbstractMojo {
             e.printStackTrace();
             return null;
         }
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  filename DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws MojoExecutionException DOCUMENT ME!
-     */
-    private AttributeMap parseConfigFile(File filename) throws MojoExecutionException {
-        AttributeMap list   = new AttributeMap();
-        Reader       reader = null;
-        Document     doc    = null;
-
-        try {
-            reader = new FileReader(filename);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new MojoExecutionException("Unable to open properties file");
-        }
-
-        SAXBuilder builder = new SAXBuilder();
-
-        builder.setEntityResolver(new DTDHandler());
-        builder.setIgnoringElementContentWhitespace(true);
-        builder.setIgnoringBoundaryWhitespace(true);
-        try {
-            doc = builder.build(reader);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new MojoExecutionException("Unable to parse XML properties file " + filename, e);
-        }
-
-        List<Element> elementList = getChildren(doc.getRootElement());
-
-        for (Element element : elementList) {
-            String key   = element.getName();
-            String value = getElementContentsAsText(element);
-
-            list.put(key, value);
-        }
-
-        return list;
     }
 
     /**
