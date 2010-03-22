@@ -35,7 +35,7 @@
       </listitem>
 
       <listitem>
-        <para>Filter - It can run them through a Velocity filter to provide
+        <para>Merge - It can run them through a Velocity template to provide
         the appearance of a Doxia-generated file without Doxia's habit of
         stripping useful formatting.</para>
       </listitem>
@@ -51,7 +51,7 @@
       <itemizedlist>
         <listitem>
           <para><link
-          xlink:href="filter-mojo.html">htmlfilter-site:filter</link> runs
+          xlink:href="merge-mojo.html">htmlfilter-site:merge</link> runs
           Velocity on all files in a directory matching a pattern.</para>
         </listitem>
 

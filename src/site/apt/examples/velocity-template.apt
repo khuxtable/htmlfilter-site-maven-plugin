@@ -1,10 +1,11 @@
     -----
-    Filter Template Example
+    Velocity Template Example
     -----
 
-Filter Template Example
+Velocity Template Example
 
-  The following is a sample Velocity template you could use to filter your files.
+  The following is a sample Velocity template you could use to merge your files. This is the <<<default_site.vm>>> file
+  used by the maven site plugin.
   
 +------
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -98,8 +98,8 @@
         &lt;/executions&gt;
         &lt;configuration&gt;
           &lt;tidySourceDirectory&gt;${basedir}/src/site/myhtml&lt;/tidySourceDirectory&gt;
-          &lt;tidyTargetDirectory&gt;\${project.build.directory}/generated-site/resources&lt;/tidyTargetDirectory&gt;
-          &lt;tidyFilePattern&gt;**/*.html&lt;/tidyFilePattern&gt;
+          &lt;tidyTargetDirectory&gt;\${project.build.directory}/generated-site/xhtml&lt;/tidyTargetDirectory&gt;
+          &lt;tidyFilePattern&gt;**/*.html,**/*.html.vm&lt;/tidyFilePattern&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
       ...

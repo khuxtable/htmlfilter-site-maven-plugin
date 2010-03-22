@@ -41,12 +41,12 @@
 
     <section>
       <info>
-        <title>Filtering HTML Files</title>
+        <title>Merge HTML Files</title>
       </info>
 
       <para>You can run the goal directly by executing:</para>
 
-      <synopsis>mvn htmlfilter-site:filter</synopsis>
+      <synopsis>mvn htmlfilter-site:merge</synopsis>
     </section>
 
     <section>
@@ -65,7 +65,7 @@
         &lt;execution&gt;
             &lt;goals&gt;
                 &lt;goal&gt;tidy&lt;/goal&gt;
-                &lt;goal&gt;filter&lt;/goal&gt;
+                &lt;goal&gt;merge&lt;/goal&gt;
             &lt;/goals&gt;
             &lt;phase&gt;pre-site&lt;/phase&gt;
         &lt;/execution&gt;
@@ -77,7 +77,7 @@
 
       <synopsis><code>mvn site</code></synopsis>
 
-      <para>and the files will be tidied and/or filtered before your site
+      <para>and the files will be tidied and/or merged before your site
       documentation.</para>
     </section>
   </section>

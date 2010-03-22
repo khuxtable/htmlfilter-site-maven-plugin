@@ -7,7 +7,7 @@
          xmlns:ns3="http://www.w3.org/2000/svg"
          xmlns:ns="http://docbook.org/ns/docbook">
   <info>
-    <title>Filter Example</title>
+    <title>Merge Example</title>
 
     <author>
       <personname><firstname>Kathryn</firstname><surname>Huxtable</surname></personname>
@@ -22,16 +22,16 @@
 
   <section>
     <info>
-      <title>Filter Example</title>
+      <title>Merge Example</title>
     </info>
 
-    <para>Using the HTML Filter Site Maven plugin you can Filter HTML files
-    produced outside the normal site generation process. These files can then
-    be used in your site documentation.</para>
+    <para>Using the HTML Filter Site Maven plugin you can merge HTML files
+    produced outside the normal site generation process with a Velocity
+    template. These files can then be used in your site documentation.</para>
 
     <para>You can run the goal directly by executing:</para>
 
-    <synopsis>mvn htmlfilter-site:filter</synopsis>
+    <synopsis>mvn htmlfilter-site:merge</synopsis>
 
     <para>It is better to bind the goal to the <code>pre-site</code> execution
     phase, thus:</para>
@@ -43,7 +43,7 @@
     &lt;executions&gt;
         &lt;execution&gt;
             &lt;goals&gt;
-                &lt;goal&gt;filter&lt;/goal&gt;
+                &lt;goal&gt;merge&lt;/goal&gt;
             &lt;/goals&gt;
             &lt;phase&gt;pre-site&lt;/phase&gt;
         &lt;/execution&gt;
@@ -55,8 +55,8 @@
 
     <synopsis>mvn site</synopsis>
 
-    <para>and the files will be filtered before your site
-    documentation.</para>
+    <para>and the files will be merged before your site documentation is
+    produced.</para>
 
     <para>By default, the source files are found in
     <code>${basedir}/site/html</code> and are filtered into
@@ -78,7 +78,7 @@
       </info>
 
       <para>The following is a complete example of using the HTML Filter Site
-      Maven plugin to filter all the html files in a directory tree.</para>
+      Maven plugin to merge all the html files in a directory tree.</para>
 
       <programlisting language="xml">&lt;project&gt;
   ...
@@ -92,7 +92,7 @@
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;goals&gt;
-              &lt;goal&gt;filter&lt;/goal&gt;
+              &lt;goal&gt;merge&lt;/goal&gt;
             &lt;/goals&gt;
             &lt;phase&gt;pre-site&lt;/phase&gt;
           &lt;/execution&gt;
@@ -100,7 +100,7 @@
         &lt;configuration&gt;
           &lt;sourceDirectory&gt;${basedir}/src/site/myhtml&lt;/sourceDirectory&gt;
           &lt;targetDirectory&gt;\${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
-          &lt;filePattern&gt;**/*.html&lt;/filePattern&gt;
+          &lt;filePattern&gt;**/*.html,**/*.html.vm&lt;/filePattern&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
       ...
@@ -110,7 +110,7 @@
   ...
 &lt;/project&gt;</programlisting>
 
-      <para>The example above binds the <code>tidy</code> goal to the
+      <para>The example above binds the <code>merge</code> goal to the
       <code>pre-site</code> phase, causing it to run before the site
       documentation is created.</para>
 
@@ -123,6 +123,10 @@
       <para>The <code>filePattern</code> parameter overrides the default
       pattern matching the files to be converted. The value specified is
       actually the default value.</para>
+
+      <para>Files ending in "<filename>.vm</filename>" will be filtered for
+      Velocity properties. The <filename>.html.vm</filename> will be changed
+      to <filename>.html</filename> in the target directory.</para>
     </section>
 
     <section>
@@ -130,14 +134,10 @@
         <title>A Sample Velocity Template</title>
       </info>
 
-      <para>The following link is a <link
-      xlink:href="filter-template.html">sample Velocity template</link> that
-      can be used to process files. Note that the file is not as complex as
-      that used by Doxia. It doesn't read the <code>site.xml</code> file yet
-      or create any decorations. You need to do that yourself. You can get the
-      decorations for your project by copying from a Doxia-generated report
-      file. You'll need to do that each time you make changes to your
-      <code>site.xml</code> file, or when you add or remove a report.</para>
+      <para>See the <link xlink:href="velocity-template.html">Velocity
+      template example</link> for a template that can be used to process
+      files. This is the <filename>default_site.vm</filename> file used by the
+      site plugin.</para>
     </section>
   </section>
 </article>

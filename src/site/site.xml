@@ -24,12 +24,11 @@
 		</menu>
 		
 		<menu name="Examples">
-            <item name="Filter Example" href="examples/filter.html" />
-            <item name="Filter Template Example" href="examples/filter-template.html" />
+            <item name="Merge Example" href="examples/merge.html" />
             <item name="Tidy Example" href="examples/tidy.html" />
+            <item name="Tidy and Merge Example" href="examples/tidy-and-merge.html" />
+            <item name="Velocity Template Example" href="examples/velocity-template.html" />
 		</menu>
-
-		<!-- <menu name="Generated Information" ref="reports"/> -->
 
 		<menu name="Project Information">
             <item name="Dependencies" href="dependencies.html" />

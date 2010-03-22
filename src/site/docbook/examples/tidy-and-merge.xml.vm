@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Converted by db4-upgrade version 1.0 -->
+<article version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:ns5="http://www.w3.org/1999/xhtml"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/2000/svg"
+         xmlns:ns="http://docbook.org/ns/docbook">
+  <info>
+    <title>Tidy and Merge Example</title>
+
+    <author>
+      <personname><firstname>Kathryn</firstname><surname>Huxtable</surname></personname>
+
+      <affiliation>
+        <orgname>kathrynhuxtable.org</orgname>
+      </affiliation>
+    </author>
+
+    <pubdate>2010-03-20</pubdate>
+  </info>
+
+  <section>
+    <info>
+      <title>Tidy and Merge Example using the docbkx plugin</title>
+    </info>
+
+    <para>The main purpose for which this plugin was written was to process
+    the HTML output of the docbkx maven plugin to make it fit with the
+    Doxia-generated reports without losing the DocBook formatting.</para>
+
+    <para>The following is a complete example of using the docbkx maven plugin
+    to produce HTML output from DocBook source, then using the HTML Filter
+    Site Maven plugin to tidy the results since docbkx 2.0.9 produces HTML
+    instead of XHTML, and then merging all the files with a Velocity site
+    template to produce documentation that looks like the Doxia reports
+    produced by the site plugin.</para>
+
+    <programlisting language="xml">&lt;project&gt;
+  ...
+  &lt;build&gt;
+     &lt;pluginManagement&gt;
+     &lt;plugins&gt;
+      &lt;plugin&gt;
+       &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
+       &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
+       &lt;version&gt;${project.version}&lt;/version&gt;
+      &lt;/plugin&gt;
+     &lt;/plugins&gt;
+    &lt;/pluginManagement&gt;
+    ...
+    &lt;plugins&gt;
+      ...
+     &lt;plugin&gt;
+      &lt;groupId&gt;com.agilejava.docbkx&lt;/groupId&gt;
+      &lt;artifactId&gt;docbkx-maven-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.0.9&lt;/version&gt;
+      &lt;executions&gt;
+       &lt;execution&gt;
+        &lt;goals&gt;
+         &lt;goal&gt;generate-html&lt;/goal&gt;
+        &lt;/goals&gt;
+        &lt;phase&gt;pre-site&lt;/phase&gt;
+       &lt;/execution&gt;
+      &lt;/executions&gt;
+      &lt;dependencies&gt;
+       &lt;dependency&gt;
+        &lt;groupId&gt;net.sf.docbook&lt;/groupId&gt;
+        &lt;artifactId&gt;docbook-xml&lt;/artifactId&gt;
+        &lt;version&gt;5.0-all&lt;/version&gt;
+        &lt;classifier&gt;resources&lt;/classifier&gt;
+        &lt;type&gt;zip&lt;/type&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+       &lt;/dependency&gt;
+      &lt;/dependencies&gt;
+      &lt;configuration&gt;
+       &lt;chunkedOutput&gt;false&lt;/chunkedOutput&gt;
+       &lt;sourceDirectory&gt;${basedir}/src/site/docbook&lt;/sourceDirectory&gt;
+       &lt;includes&gt;**/*.xml,**/*.xml.vm&lt;/includes&gt;
+       &lt;targetDirectory&gt;${project.build.directory}/generated-site/html&lt;/targetDirectory&gt;
+       &lt;generateMetaAbstract&gt;0&lt;/generateMetaAbstract&gt;
+       &lt;highlightSource&gt;1&lt;/highlightSource&gt;
+       &lt;highlightDefaultLanguage /&gt;
+       &lt;htmlCustomization&gt;${basedir}/src/site/xsl/html.xsl&lt;/htmlCustomization&gt;
+       &lt;imgSrcPath&gt;./&lt;/imgSrcPath&gt;
+       &lt;htmlCellSpacing&gt;2&lt;/htmlCellSpacing&gt;
+       &lt;htmlCellPadding&gt;2&lt;/htmlCellPadding&gt;
+       &lt;suppressHeaderNavigation&gt;1&lt;/suppressHeaderNavigation&gt;
+       &lt;suppressFooterNavigation&gt;1&lt;/suppressFooterNavigation&gt;
+       &lt;tableBordersWithCss&gt;true&lt;/tableBordersWithCss&gt;
+       &lt;tableFrameBorderThickness&gt;0&lt;/tableFrameBorderThickness&gt;
+       &lt;tableCellBorderThickness&gt;0&lt;/tableCellBorderThickness&gt;
+       &lt;targetFileExtension&gt;html&lt;/targetFileExtension&gt;
+       &lt;!-- use extensions --&gt;
+       &lt;useExtensions&gt;1&lt;/useExtensions&gt;
+       &lt;!-- callouts --&gt;
+       &lt;calloutsExtension&gt;1&lt;/calloutsExtension&gt;
+       &lt;entities&gt;
+        &lt;entity&gt;
+         &lt;name&gt;projectVersion&lt;/name&gt;
+         &lt;value&gt;${project.version}&lt;/value&gt;
+        &lt;/entity&gt;
+       &lt;/entities&gt;
+      &lt;/configuration&gt;
+     &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.kathrynhuxtable.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;htmlfilter-site-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;${project.version}&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;tidy&lt;/goal&gt;
+               &lt;goal&gt;merge&lt;/goal&gt;
+           &lt;/goals&gt;
+            &lt;phase&gt;pre-site&lt;/phase&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+        &lt;configuration&gt;
+       &lt;tidySourceDirectory&gt;${project.build.directory}/generated-site/html&lt;/tidySourceDirectory&gt;
+       &lt;tidyTargetDirectory&gt;${project.build.directory}/generated-site/tidy&lt;/tidyTargetDirectory&gt;
+       &lt;tidyFilePattern&gt;**/*.html,**/*.xm.html&lt;/tidyFilePattern&gt;
+
+       &lt;sourceDirectory&gt;${project.build.directory}/generated-site/tidy&lt;/sourceDirectory&gt;
+       &lt;filePattern&gt;**/*.html,**/*.xm.html&lt;/filePattern&gt;
+       &lt;filterExtension&gt;.xm.html&lt;/filterExtension&gt;
+       &lt;targetDirectory&gt;${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+    ...
+  &lt;/build&gt;
+  ...
+&lt;/project&gt;</programlisting>
+  </section>
+</article>
