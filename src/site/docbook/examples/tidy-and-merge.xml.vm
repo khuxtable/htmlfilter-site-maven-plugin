@@ -77,7 +77,7 @@
        &lt;chunkedOutput&gt;false&lt;/chunkedOutput&gt;
        &lt;sourceDirectory&gt;${basedir}/src/site/docbook&lt;/sourceDirectory&gt;
        &lt;includes&gt;**/*.xml,**/*.xml.vm&lt;/includes&gt;
-       &lt;targetDirectory&gt;${project.build.directory}/generated-site/html&lt;/targetDirectory&gt;
+       &lt;targetDirectory&gt;\${project.build.directory}/generated-site/html&lt;/targetDirectory&gt;
        &lt;generateMetaAbstract&gt;0&lt;/generateMetaAbstract&gt;
        &lt;highlightSource&gt;1&lt;/highlightSource&gt;
        &lt;highlightDefaultLanguage /&gt;
@@ -117,14 +117,14 @@
           &lt;/execution&gt;
         &lt;/executions&gt;
         &lt;configuration&gt;
-       &lt;tidySourceDirectory&gt;${project.build.directory}/generated-site/html&lt;/tidySourceDirectory&gt;
-       &lt;tidyTargetDirectory&gt;${project.build.directory}/generated-site/tidy&lt;/tidyTargetDirectory&gt;
+       &lt;tidySourceDirectory&gt;\${project.build.directory}/generated-site/html&lt;/tidySourceDirectory&gt;
+       &lt;tidyTargetDirectory&gt;\${project.build.directory}/generated-site/tidy&lt;/tidyTargetDirectory&gt;
        &lt;tidyFilePattern&gt;**/*.html,**/*.xm.html&lt;/tidyFilePattern&gt;
 
-       &lt;sourceDirectory&gt;${project.build.directory}/generated-site/tidy&lt;/sourceDirectory&gt;
+       &lt;sourceDirectory&gt;\${project.build.directory}/generated-site/tidy&lt;/sourceDirectory&gt;
        &lt;filePattern&gt;**/*.html,**/*.xm.html&lt;/filePattern&gt;
        &lt;filterExtension&gt;.xm.html&lt;/filterExtension&gt;
-       &lt;targetDirectory&gt;${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
+       &lt;targetDirectory&gt;\${project.build.directory}/generated-site/resources&lt;/targetDirectory&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
       ...
