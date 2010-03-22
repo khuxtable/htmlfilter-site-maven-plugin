@@ -116,12 +116,20 @@ public class FilterMojo extends AbstractMojo {
     protected ArtifactRepository localRepository;
 
     /**
-     * Match pattern for the files to be processed..
+     * Match pattern for the files to be processed.
      *
      * @parameter expression="${htmlfiltersite.filePattern}"
-     *            default-value="**\/*.html"
+     *            default-value="**\/*.html,**\/*.html.vm"
      */
     private String filePattern;
+
+    /**
+     * Match pattern for the files to be filtered.
+     *
+     * @parameter expression="${htmlfiltersite.filterExtension}"
+     *            default-value=".html.vm"
+     */
+    private String filterExtension;
 
     /**
      * Directory containing the site.xml file and the source for apt, fml and
@@ -444,10 +452,18 @@ public class FilterMojo extends AbstractMojo {
      */
     private void filterFile(String file, VelocityEngine ve, Template template, DecorationModel decorationModel, AttributeMap attributes)
         throws MojoExecutionException {
-        File       sourceFile = new File(sourceDirectory, file);
-        File       targetFile = new File(targetDirectory, file);
+        File    sourceFile  = new File(sourceDirectory, file);
+        boolean doFiltering = (filterExtension != null && filterExtension.equals(file.substring(file.length() - filterExtension.length())));
+
+        File       targetFile = null;
         FileWriter fileWriter = null;
         Reader     fileReader = null;
+
+        if (doFiltering) {
+            targetFile = new File(targetDirectory, file.substring(0, file.length() - filterExtension.length()) + ".html");
+        } else {
+            targetFile = new File(targetDirectory, file);
+        }
 
         if (!targetFile.getParentFile().exists()) {
             targetFile.getParentFile().mkdirs();
@@ -459,8 +475,8 @@ public class FilterMojo extends AbstractMojo {
             StringWriter sw = new StringWriter();
 
             fileReader = new InputStreamReader(new FileInputStream(sourceFile), "UTF-8");
-            // TODO (only) If file ends in .vm filter it through Velocity before merging with template.
-            if (true) {
+            // If file ends in filter extension, filter it through Velocity before merging with template.
+            if (doFiltering) {
                 if (!ve.evaluate(context, sw, "htmlfilter-site", fileReader)) {
                     throw new MojoExecutionException("Unable to evaluate html file " + sourceFile);
                 }
