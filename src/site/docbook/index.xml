@@ -22,7 +22,7 @@
 
   <section>
     <info>
-      <title>HTML Filter Site Maven Plugin</title>
+      <title>Introduction</title>
     </info>
 
     <para>The HTML Filter Site Maven plugin filters HTML files destined for
