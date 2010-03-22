@@ -86,6 +86,7 @@
 				<configuration>
 					<locales>en</locales>
 					<outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+					<templateFile>${basedir}/src/site/site.vm</templateFile>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -398,7 +399,7 @@
 							<execution>
 								<goals>
 									<goal>tidy</goal>
-									<goal>filter</goal>
+									<goal>merge</goal>
 								</goals>
 								<phase>pre-site</phase>
 							</execution>
