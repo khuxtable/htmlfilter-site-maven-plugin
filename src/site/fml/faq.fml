@@ -13,7 +13,7 @@
         What is the HTML Filter Site Maven Plugin?
       </question>
       <answer>
-        <p>A Maven plugin to tidy and filter HTML files for use in Maven site documentation.
+        <p>A Maven plugin to tidy and merge HTML files for use in Maven site documentation.
         It would be useful if you have special formatting requirements that Doxia doesn't handle
         but you want the pages to look consistent with the rest of the site documentation.</p>
       </answer>
