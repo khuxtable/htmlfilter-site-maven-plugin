@@ -700,8 +700,8 @@ public class MergeMojo extends AbstractMojo {
         SAXBuilder builder = new SAXBuilder();
 
         builder.setEntityResolver(new DTDHandler());
-        builder.setIgnoringElementContentWhitespace(true);
-        builder.setIgnoringBoundaryWhitespace(true);
+        builder.setIgnoringElementContentWhitespace(false);
+        builder.setIgnoringBoundaryWhitespace(false);
         document = builder.build(reader);
 
         return document;
