@@ -3,7 +3,7 @@
 	<groupId>org.kathrynhuxtable.maven.plugins</groupId>
 	<artifactId>htmlfilter-site-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>0.3.2-SNAPSHOT</version>
+	<version>0.3.1-SNAPSHOT</version>
 	<prerequisites>
 		<maven>2.2.1</maven>
 	</prerequisites>
@@ -123,6 +123,7 @@
 				</dependencies>
 				<configuration>
 					<goals>deploy</goals>
+                    <mavenExecutorId>forked-path</mavenExecutorId>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -444,6 +445,9 @@
 								</goals>
 							</execution>
 						</executions>
+                        <configuration>
+                            <useAgent>true</useAgent>
+                        </configuration>
 					</plugin>
 				</plugins>
 			</build>
