@@ -13,7 +13,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>HTML Filter Site Maven Plugin - Project Plugin Management</title>
+    <title>HTML Filter Site Maven Plugin - Usage</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -90,8 +90,8 @@
           </li>
               
     <li>
-                    <a href="usage.html">Usage</a>
-          </li>
+              <strong>Usage</strong>
+        </li>
               
     <li>
                     <a href="faq.html">FAQ</a>
@@ -132,8 +132,8 @@
           </li>
               
     <li>
-              <strong>Plugin Management</strong>
-        </li>
+                    <a href="plugin-management.html">Plugin Management</a>
+          </li>
               
     <li>
                     <a href="license.html">Project License</a>
@@ -182,7 +182,81 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <a name="Project_Plugin_Management"></a><div class="section"><h2>Project Plugin Management<a name="Project_Plugin_Management"></a></h2><table align="center" border="0" class="bodyTable"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-antrun-plugin">maven-antrun-plugin</a></td><td>1.3</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-assembly-plugin">maven-assembly-plugin</a></td><td>2.2-beta-2</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-clean-plugin">maven-clean-plugin</a></td><td>2.2</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-compiler-plugin">maven-compiler-plugin</a></td><td>2.0.2</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-dependency-plugin">maven-dependency-plugin</a></td><td>2.0</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-deploy-plugin">maven-deploy-plugin</a></td><td>2.4</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-ear-plugin">maven-ear-plugin</a></td><td>2.3.1</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-ejb-plugin">maven-ejb-plugin</a></td><td>2.1</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-install-plugin">maven-install-plugin</a></td><td>2.2</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-jar-plugin">maven-jar-plugin</a></td><td>2.2</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-javadoc-plugin">maven-javadoc-plugin</a></td><td>2.5</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-plugin-plugin">maven-plugin-plugin</a></td><td>2.4.3</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-rar-plugin">maven-rar-plugin</a></td><td>2.2</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-release-plugin/">maven-release-plugin</a></td><td>2.0-beta-8</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-resources-plugin">maven-resources-plugin</a></td><td>2.3</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-site-plugin">maven-site-plugin</a></td><td>2.0-beta-7</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-source-plugin">maven-source-plugin</a></td><td>2.0.4</td></tr><tr class="a"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/surefire/maven-surefire-plugin">maven-surefire-plugin</a></td><td>2.4.3</td></tr><tr class="b"><td>org.apache.maven.plugins</td><td><a class="externalLink" href="http://maven.apache.org/plugins/maven-war-plugin">maven-war-plugin</a></td><td>2.1-alpha-2</td></tr><tr class="a"><td>org.kathrynhuxtable.maven.plugins</td><td><a class="externalLink" href="http://www.kathrynhuxtable.org/projects/site/htmlfilter-site-maven-plugin">htmlfilter-site-maven-plugin</a></td><td>0.3.2-SNAPSHOT</td></tr></table></div>
+        <div xmlns="http://www.w3.org/1999/xhtml" class="article" lang="en">
+  <div class="section" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h1 class="title"><a id="d0e17" name="d0e17" shape="rect"></a>Usage</h1>
+        </div>
+      </div>
+    </div>
+    <p>Using the HTML Filter Site Maven plugin you can tidy and
+        filter HTML files produced outside the normal site
+        generation process. These files can then be used in your
+        site documentation.</p>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d0e23" name="d0e23" shape="rect"></a>Tidying HTML Files</h1>
+          </div>
+        </div>
+      </div>
+      <p>You can run the goal directly by executing:</p>
+      <pre class="synopsis" xml:space="preserve">
+mvn htmlfilter-site:tidy
+</pre>
+    </div>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d0e31" name="d0e31" shape="rect"></a>Merge HTML Files</h1>
+          </div>
+        </div>
+      </div>
+      <p>You can run the goal directly by executing:</p>
+      <pre class="synopsis" xml:space="preserve">
+mvn htmlfilter-site:merge
+</pre>
+    </div>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d0e39" name="d0e39" shape="rect"></a>Binding the Goal or Goals to a
+                Phase</h1>
+          </div>
+        </div>
+      </div>
+      <p>It is better to bind the goal(s) to the <code class="code">pre-site</code> execution phase, thus:</p>
+      <pre class="programlisting" xml:space="preserve">
+&lt;<span class="hl-tag">plugin</span>&gt;
+    &lt;<span class="hl-tag">groupId</span>&gt;org.kathrynhuxtable.maven.plugins&lt;<span class="hl-tag">/groupId</span>&gt;
+    &lt;<span class="hl-tag">artifactId</span>&gt;htmlfilter-site-maven-plugin&lt;<span class="hl-tag">/artifactId</span>&gt;
+    &lt;<span class="hl-tag">version</span>&gt;0.3.2-SNAPSHOT&lt;<span class="hl-tag">/version</span>&gt;
+    &lt;<span class="hl-tag">executions</span>&gt;
+        &lt;<span class="hl-tag">execution</span>&gt;
+            &lt;<span class="hl-tag">goals</span>&gt;
+                &lt;<span class="hl-tag">goal</span>&gt;tidy&lt;<span class="hl-tag">/goal</span>&gt;
+                &lt;<span class="hl-tag">goal</span>&gt;merge&lt;<span class="hl-tag">/goal</span>&gt;
+            &lt;<span class="hl-tag">/goals</span>&gt;
+            &lt;<span class="hl-tag">phase</span>&gt;pre-site&lt;<span class="hl-tag">/phase</span>&gt;
+        &lt;<span class="hl-tag">/execution</span>&gt;
+    &lt;<span class="hl-tag">/executions</span>&gt;
+    ...
+&lt;<span class="hl-tag">/plugin</span>&gt;
+</pre>
+      <p>That way you can simply execute:</p>
+      <pre class="synopsis" xml:space="preserve">
+<code class="code">mvn site</code>
+</pre>
+      <p>and the files will be tidied and/or merged before your
+          site documentation.</p>
+    </div>
+  </div>
+</div>
       </div>
     </div>
     <div class="clear">

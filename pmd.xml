@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2010-03-28T14:19:19.458">
+<pmd version="4.2.2" timestamp="2010-03-28T14:49:36.220">
 <file name="/Users/huxtable/Documents/workspace/htmlfilter-site-maven-plugin/src/main/java/org/kathrynhuxtable/maven/plugins/htmlfiltersite/HTMLOutputter.java">
 <violation beginline="397" endline="401" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.kathrynhuxtable.maven.plugins.htmlfiltersite" class="HTMLOutputter" method="printContentRange" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements

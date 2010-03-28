@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HTML Filter Site Maven Plugin - Merge Example</title>
+    <style type="text/css" media="all">
+      @import url("../css/maven-base.css");
+      @import url("../css/maven-theme.css");
+      @import url("../css/site.css");
+      @import url("../css/highlight.css");
+    </style>
+    <link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      </head>
+  <body class="composite">
+    <div id="page">
+    <div id="banner">
+                  <a href="../../../" id="bannerLeft"  >
+    
+                                            <img src="../../../../imagedir/kathrynhuxtable.org.gif" alt="kathrynhuxtable.org" />
+    
+            </a>
+                          <div id="bannerRight">
+    
+                                            <img src="../images/HTMLFilterSiteLogo.png" alt="HTML Filter Site Maven Plugin" />
+    
+            </div>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+            
+  
+    
+            <div class="xleft">
+        Version: 0.3.2-SNAPSHOT
+              </div>
+            <div class="xright">            <a href="../../../../blog/projects/">Kathryn Huxtable's Projects</a>
+            |
+                <a href="http://www.kathrynhuxtable.org" class="externalLink">kathrynhuxtable.org</a>
+            
+  
+
+  
+    
+            
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+            
+  
+    
+                   <h5>HTML Filter Site Maven Plugin</h5>
+            <ul>
+              
+    <li>
+                    <a href="../index.html">Introduction</a>
+          </li>
+              
+    <li>
+                    <a href="../plugin-info.html">Goals</a>
+          </li>
+              
+    <li>
+                    <a href="../usage.html">Usage</a>
+          </li>
+              
+    <li>
+                    <a href="../faq.html">FAQ</a>
+          </li>
+          </ul>
+              <h5>Examples</h5>
+            <ul>
+              
+    <li>
+              <strong>Merge Example</strong>
+        </li>
+              
+    <li>
+                    <a href="../examples/tidy.html">Tidy Example</a>
+          </li>
+              
+    <li>
+                    <a href="../examples/tidy-and-merge.html">Tidy and Merge Example</a>
+          </li>
+              
+    <li>
+                    <a href="../examples/velocity-template.html">Velocity Template Example</a>
+          </li>
+          </ul>
+              <h5>Project Information</h5>
+            <ul>
+              
+    <li>
+                    <a href="../dependencies.html">Dependencies</a>
+          </li>
+              
+    <li>
+                    <a href="../issue-tracking.html">Issue Tracking</a>
+          </li>
+              
+    <li>
+                    <a href="../mail-lists.html">Mailing Lists</a>
+          </li>
+              
+    <li>
+                    <a href="../plugin-management.html">Plugin Management</a>
+          </li>
+              
+    <li>
+                    <a href="../license.html">Project License</a>
+          </li>
+              
+    <li>
+                    <a href="../plugins.html">Project Plugins</a>
+          </li>
+              
+    <li>
+                    <a href="../project-summary.html">Project Summary</a>
+          </li>
+              
+    <li>
+                    <a href="../team-list.html">Project Team</a>
+          </li>
+              
+    <li>
+                    <a href="../source-repository.html">Source Repository</a>
+          </li>
+          </ul>
+              <h5>Project Reports</h5>
+            <ul>
+              
+    <li>
+                    <a href="../cpd.html">CPD Report</a>
+          </li>
+              
+    <li>
+                    <a class="newWindow" target="_New" href="../apidocs/index.html">JavaDocs</a>
+          </li>
+              
+    <li>
+                    <a href="../pmd.html">PMD Report</a>
+          </li>
+              
+    <li>
+                    <a class="newWindow" target="_New" href="../xref/index.html">Source Xref</a>
+          </li>
+              
+    <li>
+                    <a href="../taglist.html">Tag List</a>
+          </li>
+          </ul>
+            </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="article" lang="en">
+  <div class="section" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h1 class="title"><a id="d54e17" name="d54e17" shape="rect"></a>Merge Example</h1>
+        </div>
+      </div>
+    </div>
+    <p>Using the HTML Filter Site Maven plugin you can merge
+        HTML files produced outside the normal site generation
+        process with a Velocity template. These files can then be
+        used in your site documentation.</p>
+    <p>You can run the goal directly by executing:</p>
+    <pre class="synopsis" xml:space="preserve">
+mvn htmlfilter-site:merge
+</pre>
+    <p>It is better to bind the goal to the <code class="code">pre-site</code> execution phase, thus:</p>
+    <pre class="programlisting" xml:space="preserve">
+&lt;<span class="hl-tag">plugin</span>&gt;
+    &lt;<span class="hl-tag">groupId</span>&gt;org.kathrynhuxtable.maven.plugins&lt;<span class="hl-tag">/groupId</span>&gt;
+    &lt;<span class="hl-tag">artifactId</span>&gt;htmlfilter-site-maven-plugin&lt;<span class="hl-tag">/artifactId</span>&gt;
+    &lt;<span class="hl-tag">version</span>&gt;0.3.2-SNAPSHOT&lt;<span class="hl-tag">/version</span>&gt;
+    &lt;<span class="hl-tag">executions</span>&gt;
+        &lt;<span class="hl-tag">execution</span>&gt;
+            &lt;<span class="hl-tag">goals</span>&gt;
+                &lt;<span class="hl-tag">goal</span>&gt;merge&lt;<span class="hl-tag">/goal</span>&gt;
+            &lt;<span class="hl-tag">/goals</span>&gt;
+            &lt;<span class="hl-tag">phase</span>&gt;pre-site&lt;<span class="hl-tag">/phase</span>&gt;
+        &lt;<span class="hl-tag">/execution</span>&gt;
+    &lt;<span class="hl-tag">/executions</span>&gt;
+    ...
+&lt;<span class="hl-tag">/plugin</span>&gt;
+</pre>
+    <p>That way you can simply execute:</p>
+    <pre class="synopsis" xml:space="preserve">
+mvn site
+</pre>
+    <p>and the files will be merged before your site
+        documentation is produced.</p>
+    <p>By default, the source files are found in <code class="code">${basedir}/site/html</code> and are filtered
+        into <code class="code">${project.build.directory}/generated-site/resources</code>,
+        which will be copied into your site documentation folder.
+        You can override this by specifying the <code class="code">sourceDirectory</code> or <code class="code">targetDirectory</code> parameter in the <code class="code">configuration</code> section of the plugin, as
+        in the example below, or by specifying the <code class="code">${htmlfiltersite.sourceDirectory}</code> or
+        <code class="code">${htmlfiltersite.targetDirectory}</code>
+        expression in your POM or on the command line.</p>
+    <p>The source and target directories cannot at present be
+        the same.</p>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d54e65" name="d54e65" shape="rect"></a>A Full Example</h1>
+          </div>
+        </div>
+      </div>
+      <p>The following is a complete example of using the HTML
+          Filter Site Maven plugin to merge all the html files in a
+          directory tree.</p>
+      <pre class="programlisting" xml:space="preserve">
+&lt;<span class="hl-tag">project</span>&gt;
+  ...
+  &lt;<span class="hl-tag">build</span>&gt;
+    &lt;<span class="hl-tag">plugins</span>&gt;
+      ...
+      &lt;<span class="hl-tag">plugin</span>&gt;
+        &lt;<span class="hl-tag">groupId</span>&gt;org.kathrynhuxtable.maven.plugins&lt;<span class="hl-tag">/groupId</span>&gt;
+        &lt;<span class="hl-tag">artifactId</span>&gt;htmlfilter-site-maven-plugin&lt;<span class="hl-tag">/artifactId</span>&gt;
+        &lt;<span class="hl-tag">version</span>&gt;0.3.2-SNAPSHOT&lt;<span class="hl-tag">/version</span>&gt;
+        &lt;<span class="hl-tag">executions</span>&gt;
+          &lt;<span class="hl-tag">execution</span>&gt;
+            &lt;<span class="hl-tag">goals</span>&gt;
+              &lt;<span class="hl-tag">goal</span>&gt;merge&lt;<span class="hl-tag">/goal</span>&gt;
+            &lt;<span class="hl-tag">/goals</span>&gt;
+            &lt;<span class="hl-tag">phase</span>&gt;pre-site&lt;<span class="hl-tag">/phase</span>&gt;
+          &lt;<span class="hl-tag">/execution</span>&gt;
+        &lt;<span class="hl-tag">/executions</span>&gt;
+        &lt;<span class="hl-tag">configuration</span>&gt;
+          &lt;<span class="hl-tag">sourceDirectory</span>&gt;${basedir}/src/site/myhtml&lt;<span class="hl-tag">/sourceDirectory</span>&gt;
+          &lt;<span class="hl-tag">targetDirectory</span>&gt;${project.build.directory}/generated-site/resources&lt;<span class="hl-tag">/targetDirectory</span>&gt;
+          &lt;<span class="hl-tag">filePattern</span>&gt;**/*.html,**/*.html.vm&lt;<span class="hl-tag">/filePattern</span>&gt;
+        &lt;<span class="hl-tag">/configuration</span>&gt;
+      &lt;<span class="hl-tag">/plugin</span>&gt;
+      ...
+    &lt;<span class="hl-tag">/plugins</span>&gt;
+    ...
+  &lt;<span class="hl-tag">/build</span>&gt;
+  ...
+&lt;<span class="hl-tag">/project</span>&gt;
+</pre>
+      <p>The example above binds the <code class="code">merge</code> goal to the <code class="code">pre-site</code> phase, causing it to run
+          before the site documentation is created.</p>
+      <p>The <code class="code">sourceDirectory</code>
+          parameter overrides the default source directory.</p>
+      <p>The <code class="code">targetDirectory</code>
+          parameter overrides the default target directory.</p>
+      <p>The <code class="code">filePattern</code> parameter
+          overrides the default pattern matching the files to be
+          converted. The value specified is actually the default
+          value.</p>
+      <p>Files ending in "<code class="filename">.vm</code>"
+          will be filtered for Velocity properties. The <code class="filename">.html.vm</code> will be changed to <code class="filename">.html</code> in the target
+          directory.</p>
+    </div>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d54e107" name="d54e107" shape="rect"></a>A Sample Velocity Template</h1>
+          </div>
+        </div>
+      </div>
+      <p>See the <a class="link" href="velocity-template.html" shape="rect">Velocity template
+          example</a> for a template that can be used to process
+          files. This is the <code class="filename">default_site.vm</code> file used by the
+          site plugin.</p>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xleft">
+        &#169;  
+          2010
+    
+          kathrynhuxtable.org
+          
+  
+
+  
+    
+            
+  
+    
+              
+  
+
+  
+    
+            
+  
+    
+            <div id="lastPublished">
+        Last Published: 28 Mar 2010
+              </div>
+            </div>
+      <div class="xright">                              <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img class="poweredBy" 
+                 alt="Built by Maven" 
+                 src="../images/logos/maven-feather.png" 
+                 width="90"
+                 height="30"
+                 border="1" />
+          </a>
+            </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
