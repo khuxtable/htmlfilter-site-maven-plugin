@@ -186,14 +186,14 @@ public class MergeMojo extends AbstractMojo {
     protected List<?> reactorProjects;
 
     /**
-     * DOCUMENT ME!
+     * The Doxia SiteTool object.
      *
      * @component
      */
     private SiteTool siteTool;
 
     /**
-     * DOCUMENT ME!
+     * Maven project.
      *
      * @return the project
      */
@@ -202,7 +202,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the project.
      *
      * @param project the project to set
      */
@@ -220,7 +220,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the input encoding.
      *
      * @param inputEncoding the inputEncoding to set
      */
@@ -229,7 +229,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the output encoding.
      *
      * @param outputEncoding the outputEncoding to set
      */
@@ -248,7 +248,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the repositories.
      *
      * @param repositories the repositories to set
      */
@@ -257,7 +257,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the local repository.
      *
      * @param localRepository the localRepository to set
      */
@@ -266,7 +266,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the file pattern.
      *
      * @param filePattern the filePattern to set
      */
@@ -275,7 +275,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the site directory.
      *
      * @param siteDirectory the siteDirectory to set
      */
@@ -284,7 +284,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the source directory.
      *
      * @param sourceDirectory the sourceDirectory to set
      */
@@ -293,7 +293,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the target directory.
      *
      * @param targetDirectory the targetDirectory to set
      */
@@ -302,7 +302,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the template file.
      *
      * @param templateFile the templateFile to set
      */
@@ -311,7 +311,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the Plexus internationalization object.
      *
      * @param i18n the i18n to set
      */
@@ -320,7 +320,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the reactor projects.
      *
      * @param reactorProjects the reactorProjects to set
      */
@@ -329,7 +329,7 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Set the site tool object.
      *
      * @param siteTool the siteTool to set
      */
@@ -384,14 +384,14 @@ public class MergeMojo extends AbstractMojo {
         List<String> fileList = getFileList();
 
         for (String file : fileList) {
-            filterFile(file, ve, template, decorationModel, attributes);
+            mergeFile(file, ve, template, decorationModel, attributes);
         }
     }
 
     /**
-     * DOCUMENT ME!
+     * Initialize the velocity engine.
      *
-     * @return
+     * @return the velocity engine.
      *
      * @throws MojoExecutionException
      */
@@ -409,11 +409,11 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the velocity template.
      *
      * @param  ve
      *
-     * @return
+     * @return the velocity template.
      *
      * @throws MojoExecutionException
      */
@@ -440,17 +440,17 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Merge a file with the velocity template, filtering it if necessary.
      *
-     * @param  file
-     * @param  ve              TODO
-     * @param  template        ve
-     * @param  decorationModel TODO
-     * @param  attributes
+     * @param  file            the file to merge
+     * @param  ve              the velocity engine.
+     * @param  template        the velocity template.
+     * @param  decorationModel the Doxia decoration model.
+     * @param  attributes      attributes set from POM and such.
      *
      * @throws MojoExecutionException
      */
-    private void filterFile(String file, VelocityEngine ve, Template template, DecorationModel decorationModel, AttributeMap attributes)
+    private void mergeFile(String file, VelocityEngine ve, Template template, DecorationModel decorationModel, AttributeMap attributes)
         throws MojoExecutionException {
         File    sourceFile  = new File(sourceDirectory, file);
         boolean doFiltering = (filterExtension != null && filterExtension.equals(file.substring(file.length() - filterExtension.length())));
@@ -502,12 +502,12 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Add the information from the document to the Velocity context.
      *
-     * @param context         DOCUMENT ME!
-     * @param decorationModel DOCUMENT ME!
-     * @param doc             DOCUMENT ME!
-     * @param createDate      TODO
+     * @param context         the velocity context.
+     * @param decorationModel the Doxia decoration model.
+     * @param doc             the document.
+     * @param createDate      the create date.
      */
     private void addInfoFromDocument(VelocityContext context, DecorationModel decorationModel, Document doc, Date createDate) {
         context.put("authors", getAuthors(doc));
@@ -568,9 +568,9 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the list of filenames to merge.
      *
-     * @return
+     * @return a list of filenames to merge.
      */
     @SuppressWarnings("unchecked")
     private List<String> getFileList() {
@@ -587,12 +587,12 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the relative file path for a file.
      *
-     * @param  oldPath DOCUMENT ME!
-     * @param  newPath DOCUMENT ME!
+     * @param  oldPath the base path.
+     * @param  newPath the new path.
      *
-     * @return DOCUMENT ME!
+     * @return the relative path to the newPath based on the oldPath.
      */
     private String getRelativeFilePath(File oldPath, File newPath) {
         List<String> names = new ArrayList<String>();
@@ -623,13 +623,13 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Create the velocity context.
      *
-     * @param  sourceFile      DOCUMENT ME!
-     * @param  decorationModel TODO
-     * @param  attributes      siteRenderingContext DOCUMENT ME!
+     * @param  sourceFile      the source file.
+     * @param  decorationModel the Doxia decoration model.
+     * @param  attributes      the attributes from the POM and such.
      *
-     * @return DOCUMENT ME!
+     * @return the velocity context.
      */
     private VelocityContext createContext(File sourceFile, DecorationModel decorationModel, AttributeMap attributes) {
         VelocityContext context      = new VelocityContext();
@@ -654,11 +654,19 @@ public class MergeMojo extends AbstractMojo {
 
         context.put("dateFormat", DateFormat.getDateInstance(DateFormat.DEFAULT, locale));
 
-        String currentFileName = sourceFile.getName();
+        String  currentFileName = sourceFile.getName();
+        String  alignedFileName = PathTool.calculateLink(getRelativeFilePath(sourceDirectory, sourceFile), relativePath);
+        boolean doFiltering     = (filterExtension != null
+                    && filterExtension.equals(currentFileName.substring(currentFileName.length() - filterExtension.length())));
+
+        if (doFiltering) {
+            currentFileName = currentFileName.substring(0, currentFileName.length() - filterExtension.length()) + ".html";
+            alignedFileName = alignedFileName.substring(0, alignedFileName.length() - filterExtension.length()) + ".html";
+        }
 
         context.put("currentFileName", currentFileName);
 
-        context.put("alignedFileName", PathTool.calculateLink(getRelativeFilePath(sourceDirectory, sourceFile), relativePath));
+        context.put("alignedFileName", alignedFileName);
 
         context.put("locale", locale);
 
@@ -708,11 +716,11 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the document title.
      *
-     * @param  document DOCUMENT ME!
+     * @param  document the document.
      *
-     * @return DOCUMENT ME!
+     * @return the title.
      */
     private String getTitle(Document document) {
         Element element = null;
@@ -726,11 +734,11 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the document authors.
      *
-     * @param  document DOCUMENT ME!
+     * @param  document the document.
      *
-     * @return DOCUMENT ME!
+     * @return a list of authors.
      */
     private List<String> getAuthors(Document document) {
         List<Element> nl   = getXPathList(document, "/xhtml:html/xhtml:head/xhtml:meta[@class='author']");
@@ -749,7 +757,7 @@ public class MergeMojo extends AbstractMojo {
      * Extract a list matching an XPath path. This surreptitiously adds the
      * XHTML namespace.
      *
-     * @param  document DOCUMENT ME!
+     * @param  document the document.
      * @param  path     the path to select.
      *
      * @return the list of elements matching the path.
@@ -769,11 +777,11 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the body content as a string.
      *
-     * @param  document DOCUMENT ME!
+     * @param  document the document.
      *
-     * @return DOCUMENT ME!
+     * @return the body content.
      */
     private String getBodyContent(Document document) {
         Element element = null;
@@ -787,11 +795,11 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the head content as a string.
      *
-     * @param  document DOCUMENT ME!
+     * @param  document the document.
      *
-     * @return DOCUMENT ME!
+     * @return the head content.
      */
     private String getHeadContent(Document document) {
         Element element = null;
@@ -805,11 +813,11 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Get the element contents as a String.
      *
-     * @param  element
+     * @param  element the element.
      *
-     * @return
+     * @return the element contents.
      */
     private String getElementContentsAsText(Element element) {
         StringBuilder text     = new StringBuilder();
@@ -853,12 +861,12 @@ public class MergeMojo extends AbstractMojo {
     }
 
     /**
-     * DOCUMENT ME!
+     * Select a single node using XPath.
      *
-     * @param  element DOCUMENT ME!
-     * @param  path    DOCUMENT ME!
+     * @param  element the element.
+     * @param  path    the path to select.
      *
-     * @return DOCUMENT ME!
+     * @return the element selected.
      */
     private Element selectSingleNode(Element element, String path) {
         try {
