@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HTML Filter Site Maven Plugin - 
+    htmlfilter-site:merge</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+      @import url("./css/highlight.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      </head>
+  <body class="composite">
+    <div id="page">
+    <div id="banner">
+                  <a href="../../../" id="bannerLeft"  >
+    
+                                            <img src="../../../imagedir/kathrynhuxtable.org.gif" alt="kathrynhuxtable.org" />
+    
+            </a>
+                          <div id="bannerRight">
+    
+                                            <img src="images/HTMLFilterSiteLogo.png" alt="HTML Filter Site Maven Plugin" />
+    
+            </div>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+            
+  
+    
+            <div class="xleft">
+        Version: 0.3.2-SNAPSHOT
+              </div>
+            <div class="xright">            <a href="../../../blog/projects/">Kathryn Huxtable's Projects</a>
+            |
+                <a href="http://www.kathrynhuxtable.org" class="externalLink">kathrynhuxtable.org</a>
+            
+  
+
+  
+    
+            
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+            
+  
+    
+                   <h5>HTML Filter Site Maven Plugin</h5>
+            <ul>
+              
+    <li>
+                    <a href="index.html">Introduction</a>
+          </li>
+              
+    <li>
+                    <a href="plugin-info.html">Goals</a>
+          </li>
+              
+    <li>
+                    <a href="usage.html">Usage</a>
+          </li>
+              
+    <li>
+                    <a href="faq.html">FAQ</a>
+          </li>
+          </ul>
+              <h5>Examples</h5>
+            <ul>
+              
+    <li>
+                    <a href="examples/merge.html">Merge Example</a>
+          </li>
+              
+    <li>
+                    <a href="examples/tidy.html">Tidy Example</a>
+          </li>
+              
+    <li>
+                    <a href="examples/tidy-and-merge.html">Tidy and Merge Example</a>
+          </li>
+              
+    <li>
+                    <a href="examples/velocity-template.html">Velocity Template Example</a>
+          </li>
+          </ul>
+              <h5>Project Information</h5>
+            <ul>
+              
+    <li>
+                    <a href="dependencies.html">Dependencies</a>
+          </li>
+              
+    <li>
+                    <a href="issue-tracking.html">Issue Tracking</a>
+          </li>
+              
+    <li>
+                    <a href="mail-lists.html">Mailing Lists</a>
+          </li>
+              
+    <li>
+                    <a href="plugin-management.html">Plugin Management</a>
+          </li>
+              
+    <li>
+                    <a href="license.html">Project License</a>
+          </li>
+              
+    <li>
+                    <a href="plugins.html">Project Plugins</a>
+          </li>
+              
+    <li>
+                    <a href="project-summary.html">Project Summary</a>
+          </li>
+              
+    <li>
+                    <a href="team-list.html">Project Team</a>
+          </li>
+              
+    <li>
+                    <a href="source-repository.html">Source Repository</a>
+          </li>
+          </ul>
+              <h5>Project Reports</h5>
+            <ul>
+              
+    <li>
+                    <a href="cpd.html">CPD Report</a>
+          </li>
+              
+    <li>
+                    <a class="newWindow" target="_New" href="apidocs/index.html">JavaDocs</a>
+          </li>
+              
+    <li>
+                    <a href="pmd.html">PMD Report</a>
+          </li>
+              
+    <li>
+                    <a class="newWindow" target="_New" href="xref/index.html">Source Xref</a>
+          </li>
+              
+    <li>
+                    <a href="taglist.html">Tag List</a>
+          </li>
+          </ul>
+            </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        
+  
+    <div class="section"><h2>htmlfilter-site:merge<a name="htmlfilter-site:merge"></a></h2>
+      <p><b>Full name</b>:</p>
+      <p>org.kathrynhuxtable.maven.plugins:htmlfilter-site-maven-plugin:0.3.2-SNAPSHOT:merge</p>
+      <p><b>Description</b>:</p>
+      <div>Goal runs Velocity on the files in the specified directory.</div>
+      <p><b>Attributes</b>:</p>
+      <ul>
+        <li>Requires a Maven 2.0 project to be executed.</li>
+        <li>Requires dependency resolution of artifacts in scope: <tt>runtime</tt>.</li>
+        <li>Binds by default to the lifecycle phase: <tt>pre-site</tt>.</li>
+      </ul>
+      <div class="section"><h3>Optional Parameters<a name="Optional_Parameters"></a></h3>
+        <table class="bodyTable" border="0" align="left">
+          <tr class="a">
+            <th align="left">Name</th>
+            <th align="left">Type</th>
+            <th align="left">Since</th>
+            <th align="left">Description</th>
+          </tr>
+          <tr class="b">
+            <td align="left"><b><a href="#filePattern">filePattern</a></b></td>
+            <td align="left"><tt>String</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Match pattern for the files to be processed.<br /><b>Default value is</b>: <tt>**/*.html,**/*.html.vm</tt>.</td>
+          </tr>
+          <tr class="a">
+            <td align="left"><b><a href="#filterExtension">filterExtension</a></b></td>
+            <td align="left"><tt>String</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Match pattern for the files to be filtered.<br /><b>Default value is</b>: <tt>.html.vm</tt>.</td>
+          </tr>
+          <tr class="b">
+            <td align="left"><b><a href="#inputEncoding">inputEncoding</a></b></td>
+            <td align="left"><tt>String</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Specifies the input encoding.<br /><b>Default value is</b>: <tt>${project.build.sourceEncoding}</tt>.</td>
+          </tr>
+          <tr class="a">
+            <td align="left"><b><a href="#localRepository">localRepository</a></b></td>
+            <td align="left"><tt>ArtifactRepository</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">The local repository.<br /></td>
+          </tr>
+          <tr class="b">
+            <td align="left"><b><a href="#outputEncoding">outputEncoding</a></b></td>
+            <td align="left"><tt>String</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Specifies the output encoding.<br /><b>Default value is</b>: <tt>${project.reporting.outputEncoding}</tt>.</td>
+          </tr>
+          <tr class="a">
+            <td align="left"><b><a href="#repositories">repositories</a></b></td>
+            <td align="left"><tt>List</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Remote repositories used for the project.<br /></td>
+          </tr>
+          <tr class="b">
+            <td align="left"><b><a href="#siteDirectory">siteDirectory</a></b></td>
+            <td align="left"><tt>File</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Directory containing the site.xml file and the source for apt, fml
+and xdoc docs, e.g. ${basedir}/src/site.<br /><b>Default value is</b>: <tt>${basedir}/src/site</tt>.</td>
+          </tr>
+          <tr class="a">
+            <td align="left"><b><a href="#sourceDirectory">sourceDirectory</a></b></td>
+            <td align="left"><tt>File</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Location of the source directory.<br /><b>Default value is</b>: <tt>${basedir}/src/site/html</tt>.</td>
+          </tr>
+          <tr class="b">
+            <td align="left"><b><a href="#targetDirectory">targetDirectory</a></b></td>
+            <td align="left"><tt>File</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Location of the output directory.<br /><b>Default value is</b>: <tt>${project.build.directory}/generated-site/resources</tt>.</td>
+          </tr>
+          <tr class="a">
+            <td align="left"><b><a href="#templateFile">templateFile</a></b></td>
+            <td align="left"><tt>File</tt></td>
+            <td align="left"><tt>-</tt></td>
+            <td align="left">Velocity template for filtering.<br /><b>Default value is</b>: <tt>${basedir}/src/site/site.vm</tt>.</td>
+          </tr>
+        </table>
+      </div>
+      <div class="section"><h3>Parameter Details<a name="Parameter_Details"></a></h3>
+        <p><b><a name="filePattern">filePattern</a>:</b></p>
+        <div>Match pattern for the files to be processed.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.lang.String</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${htmlfiltersite.filePattern}</tt></li>
+          <li><b>Default</b>: <tt>**/*.html,**/*.html.vm</tt></li>
+        </ul><hr /><p><b><a name="filterExtension">filterExtension</a>:</b></p>
+        <div>Match pattern for the files to be filtered.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.lang.String</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${htmlfiltersite.filterExtension}</tt></li>
+          <li><b>Default</b>: <tt>.html.vm</tt></li>
+        </ul><hr /><p><b><a name="inputEncoding">inputEncoding</a>:</b></p>
+        <div>Specifies the input encoding.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.lang.String</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${encoding}</tt></li>
+          <li><b>Default</b>: <tt>${project.build.sourceEncoding}</tt></li>
+        </ul><hr /><p><b><a name="localRepository">localRepository</a>:</b></p>
+        <div>The local repository.</div>
+        <ul>
+          <li><b>Type</b>: <tt>org.apache.maven.artifact.repository.ArtifactRepository</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${localRepository}</tt></li>
+        </ul><hr /><p><b><a name="outputEncoding">outputEncoding</a>:</b></p>
+        <div>Specifies the output encoding.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.lang.String</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${outputEncoding}</tt></li>
+          <li><b>Default</b>: <tt>${project.reporting.outputEncoding}</tt></li>
+        </ul><hr /><p><b><a name="repositories">repositories</a>:</b></p>
+        <div>Remote repositories used for the project.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.util.List</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${project.remoteArtifactRepositories}</tt></li>
+        </ul><hr /><p><b><a name="siteDirectory">siteDirectory</a>:</b></p>
+        <div>Directory containing the site.xml file and the source for apt, fml
+and xdoc docs, e.g. ${basedir}/src/site.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.io.File</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${htmlfiltersite.siteDirectory}</tt></li>
+          <li><b>Default</b>: <tt>${basedir}/src/site</tt></li>
+        </ul><hr /><p><b><a name="sourceDirectory">sourceDirectory</a>:</b></p>
+        <div>Location of the source directory.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.io.File</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${htmlfiltersite.sourceDirectory}</tt></li>
+          <li><b>Default</b>: <tt>${basedir}/src/site/html</tt></li>
+        </ul><hr /><p><b><a name="targetDirectory">targetDirectory</a>:</b></p>
+        <div>Location of the output directory.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.io.File</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${htmlfiltersite.targetDirectory}</tt></li>
+          <li><b>Default</b>: <tt>${project.build.directory}/generated-site/resources</tt></li>
+        </ul><hr /><p><b><a name="templateFile">templateFile</a>:</b></p>
+        <div>Velocity template for filtering.</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.io.File</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Expression</b>: <tt>${htmlfiltersite.templateFile}</tt></li>
+          <li><b>Default</b>: <tt>${basedir}/src/site/site.vm</tt></li>
+        </ul>
+      </div>
+    </div>
+  
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xleft">
+        &#169;  
+          2010
+    
+          kathrynhuxtable.org
+          
+  
+
+  
+    
+            
+  
+    
+              
+  
+
+  
+    
+            
+  
+    
+            <div id="lastPublished">
+        Last Published: 28 Mar 2010
+              </div>
+            </div>
+      <div class="xright">                              <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img class="poweredBy" 
+                 alt="Built by Maven" 
+                 src="./images/logos/maven-feather.png" 
+                 width="90"
+                 height="30"
+                 border="1" />
+          </a>
+            </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
