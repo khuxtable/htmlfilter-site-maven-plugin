@@ -3,4 +3,3 @@ them through JTidy to make them XHTML conforming, and then running a Velocity
 pass to put decorations on.
 
 See the main branch for more information.
-
