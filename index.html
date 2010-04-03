@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HTML Filter Site Maven Plugin - Introduction</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+      @import url("./css/highlight.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      </head>
+  <body class="composite">
+    <div id="page">
+    <div id="banner">
+                  <a href="http://www.kathrynhuxtable.org/" id="bannerLeft"  >
+    
+                                    <img src="http://www.kathrynhuxtable.org/imagedir/kathrynhuxtable.org.gif" alt="kathrynhuxtable.org" />
+    
+            </a>
+                          <div id="bannerRight">
+    
+                                            <img src="images/HTMLFilterSiteLogo.png" alt="HTML Filter Site Maven Plugin" />
+    
+            </div>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+            
+  
+    
+            <div class="xleft">
+        Version: 0.3.2
+              </div>
+            <div class="xright">            <a href="http://www.kathrynhuxtable.org/blog/projects/" class="externalLink">Kathryn Huxtable's Projects</a>
+            |
+                <a href="http://www.kathrynhuxtable.org" class="externalLink">kathrynhuxtable.org</a>
+            
+  
+
+  
+    
+            
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+            
+  
+    
+                   <h5>HTML Filter Site Maven Plugin</h5>
+            <ul>
+              
+    <li>
+              <strong>Introduction</strong>
+        </li>
+              
+    <li>
+                    <a href="plugin-info.html">Goals</a>
+          </li>
+              
+    <li>
+                    <a href="usage.html">Usage</a>
+          </li>
+              
+    <li>
+                    <a href="faq.html">FAQ</a>
+          </li>
+          </ul>
+              <h5>Examples</h5>
+            <ul>
+              
+    <li>
+                    <a href="examples/merge.html">Merge Example</a>
+          </li>
+              
+    <li>
+                    <a href="examples/tidy.html">Tidy Example</a>
+          </li>
+              
+    <li>
+                    <a href="examples/tidy-and-merge.html">Tidy and Merge Example</a>
+          </li>
+              
+    <li>
+                    <a href="examples/velocity-template.html">Velocity Template Example</a>
+          </li>
+          </ul>
+              <h5>Project Information</h5>
+            <ul>
+              
+    <li>
+                    <a href="dependencies.html">Dependencies</a>
+          </li>
+              
+    <li>
+                    <a href="issue-tracking.html">Issue Tracking</a>
+          </li>
+              
+    <li>
+                    <a href="mail-lists.html">Mailing Lists</a>
+          </li>
+              
+    <li>
+                    <a href="plugin-management.html">Plugin Management</a>
+          </li>
+              
+    <li>
+                    <a href="license.html">Project License</a>
+          </li>
+              
+    <li>
+                    <a href="plugins.html">Project Plugins</a>
+          </li>
+              
+    <li>
+                    <a href="project-summary.html">Project Summary</a>
+          </li>
+              
+    <li>
+                    <a href="team-list.html">Project Team</a>
+          </li>
+              
+    <li>
+                    <a href="source-repository.html">Source Repository</a>
+          </li>
+          </ul>
+              <h5>Project Reports</h5>
+            <ul>
+              
+    <li>
+                    <a href="cpd.html">CPD Report</a>
+          </li>
+              
+    <li>
+                    <a class="newWindow" target="_New" href="apidocs/index.html">JavaDocs</a>
+          </li>
+              
+    <li>
+                    <a href="pmd.html">PMD Report</a>
+          </li>
+              
+    <li>
+                    <a class="newWindow" target="_New" href="xref/index.html">Source Xref</a>
+          </li>
+              
+    <li>
+                    <a href="taglist.html">Tag List</a>
+          </li>
+          </ul>
+            </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="article" lang="en">
+  <div class="section" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h1 class="title"><a id="d18e17" name="d18e17" shape="rect"></a>Introduction</h1>
+        </div>
+      </div>
+    </div>
+    <p>The HTML Filter Site Maven plugin filters HTML files
+        destined for site documentation in two ways:</p>
+    <div class="itemizedlist">
+      <ul type="disc">
+        <li>
+              <p>Tidy - It can run JTidy on them to clean them up
+              and make them XHTML compatible.</p>
+            </li>
+        <li>
+              <p>Merge - It can run them through a Velocity
+              template to provide the appearance of a
+              Doxia-generated file without Doxia's habit of
+              stripping useful formatting.</p>
+            </li>
+      </ul>
+    </div>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d18e30" name="d18e30" shape="rect"></a>Goals Overview</h1>
+          </div>
+        </div>
+      </div>
+      <p>The HTML Filter Site plugin has two goals:</p>
+      <div class="itemizedlist">
+        <ul type="disc">
+          <li>
+                <p><a class="link" href="merge-mojo.html" shape="rect">htmlfilter-site:merge</a>
+                runs Velocity on all files in a directory matching
+                a pattern.</p>
+              </li>
+          <li>
+                <p><a class="link" href="tidy-mojo.html" shape="rect">htmlfilter-site:tidy</a> runs
+                JTidy on all files in a directory matching a
+                pattern.</p>
+              </li>
+        </ul>
+      </div>
+    </div>
+    <div class="section" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="d18e47" name="d18e47" shape="rect"></a>Usage</h1>
+          </div>
+        </div>
+      </div>
+      <p>Information on using the HTML Filter Site plugin can
+          be found on the <a class="link" href="usage.html" shape="rect">usage</a> page.</p>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xleft">
+        &#169;  
+          2010
+    
+          kathrynhuxtable.org
+          
+  
+
+  
+    
+            
+  
+    
+              
+  
+
+  
+    
+            
+  
+    
+            <div id="lastPublished">
+        Last Published: 28 Mar 2010
+              </div>
+            </div>
+      <div class="xright">                              <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img class="poweredBy" 
+                 alt="Built by Maven" 
+                 src="./images/logos/maven-feather.png" 
+                 width="90"
+                 height="30"
+                 border="1" />
+          </a>
+            </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>

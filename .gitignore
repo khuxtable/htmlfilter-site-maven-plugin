@@ -1,7 +1,5 @@
 .classpath
-.gitmodules
 .project
 .settings
 *.log
-/site
-target
+target/
