@@ -139,21 +139,21 @@
 			</plugin>
 		</plugins>
 		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-scm</artifactId>
-				<version>1.0-beta-6</version>
-			</extension>
+            <extension>
+                <groupId>org.apache.maven.scm</groupId>
+                <artifactId>maven-scm-provider-gitexe</artifactId>
+                <version>1.3</version>
+            </extension>
 			<extension>
 				<groupId>org.apache.maven.scm</groupId>
 				<artifactId>maven-scm-manager-plexus</artifactId>
 				<version>1.3</version>
 			</extension>
-			<extension>
-				<groupId>org.apache.maven.scm</groupId>
-				<artifactId>maven-scm-provider-gitexe</artifactId>
-				<version>1.3</version>
-			</extension>
+            <extension>
+                <groupId>org.kathrynhuxtable.maven.wagon</groupId>
+                <artifactId>wagon-gitsite</artifactId>
+                <version>0.1</version>
+            </extension>
 		</extensions>
 	</build>
 	<dependencies>
@@ -231,8 +231,8 @@
 			concerned.
 		-->
 		<site>
-			<id>gh-pages</id>
-			<url>${siteDeployURL}</url>
+			<id>github-site</id>
+			<url>gitsite:git@github.com/khuxtable/htmlfilter-site-maven-plugin.git</url>
 		</site>
 	</distributionManagement>
 	<scm>
@@ -473,6 +473,5 @@
 	<properties>
 		<!-- Define the default encoding. We want this to be platform independent. -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<siteDeployURL>file:${basedir}/site</siteDeployURL>
 	</properties>
 </project>
