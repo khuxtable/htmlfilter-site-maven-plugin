@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2010-03-28T16:05:54.079">
-<file name="/Users/huxtable/Documents/workspace/htmlfilter-site-maven-plugin/target/checkout/src/main/java/org/kathrynhuxtable/maven/plugins/htmlfiltersite/HTMLOutputter.java">
+<pmd version="4.2.2" timestamp="2010-04-03T10:12:39.864">
+<file name="/Users/huxtable/Documents/workspace/htmlfilter-site-maven-plugin/src/main/java/org/kathrynhuxtable/maven/plugins/htmlfiltersite/HTMLOutputter.java">
 <violation beginline="397" endline="401" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.kathrynhuxtable.maven.plugins.htmlfiltersite" class="HTMLOutputter" method="printContentRange" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
@@ -11,7 +11,7 @@ These nested if statements could be combined
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/Users/huxtable/Documents/workspace/htmlfilter-site-maven-plugin/target/checkout/src/main/java/org/kathrynhuxtable/maven/plugins/htmlfiltersite/MergeMojo.java">
+<file name="/Users/huxtable/Documents/workspace/htmlfilter-site-maven-plugin/src/main/java/org/kathrynhuxtable/maven/plugins/htmlfiltersite/MergeMojo.java">
 <violation beginline="551" endline="552" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.kathrynhuxtable.maven.plugins.htmlfiltersite" class="MergeMojo" method="closeReader" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
