@@ -10,6 +10,11 @@
 		<name>HTML Filter Site Maven Plugin</name>
 		<src>images/HTMLFilterSiteLogo.png</src>
 	</bannerRight>
+    <skin>
+        <groupId>org.kathrynhuxtable.maven.skins</groupId>
+        <artifactId>green-site-skin</artifactId>
+        <version>1.0</version>
+    </skin>
 	<body>
 		<links>
 			<item name="Kathryn Huxtable's Projects" href="http://www.kathrynhuxtable.org/blog/projects/" />
